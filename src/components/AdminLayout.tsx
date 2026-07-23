@@ -5,7 +5,8 @@ import {
 } from "lucide-react";
 import { useStore } from "@/lib/store";
 
-const MENU = [
+type MenuItem = { to: string; label: string; icon: typeof LayoutDashboard; exact?: boolean };
+const MENU: MenuItem[] = [
   { to: "/admin", label: "Dashboard", icon: LayoutDashboard, exact: true },
   { to: "/admin/produtos", label: "Catálogo", icon: Package },
   { to: "/admin/colecoes", label: "Coleções", icon: Layers },
@@ -19,7 +20,7 @@ const MENU = [
   { to: "/admin/instagram", label: "Instagram", icon: Instagram },
   { to: "/admin/configuracoes", label: "Configurações", icon: Settings },
   { to: "/admin/perfil", label: "Perfil", icon: User },
-] as const;
+];
 
 export function AdminLayout() {
   const { user, logout } = useStore();
