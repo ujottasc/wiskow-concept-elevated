@@ -9,38 +9,215 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as SobreRouteImport } from './routes/sobre'
+import { Route as NovaColecaoRouteImport } from './routes/nova-colecao'
+import { Route as LoginRouteImport } from './routes/login'
+import { Route as FavoritosRouteImport } from './routes/favoritos'
+import { Route as ContatoRouteImport } from './routes/contato'
+import { Route as ColecoesRouteImport } from './routes/colecoes'
+import { Route as CatalogoRouteImport } from './routes/catalogo'
+import { Route as CarrinhoRouteImport } from './routes/carrinho'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ProdutoIdRouteImport } from './routes/produto.$id'
 
+const SobreRoute = SobreRouteImport.update({
+  id: '/sobre',
+  path: '/sobre',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NovaColecaoRoute = NovaColecaoRouteImport.update({
+  id: '/nova-colecao',
+  path: '/nova-colecao',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FavoritosRoute = FavoritosRouteImport.update({
+  id: '/favoritos',
+  path: '/favoritos',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContatoRoute = ContatoRouteImport.update({
+  id: '/contato',
+  path: '/contato',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ColecoesRoute = ColecoesRouteImport.update({
+  id: '/colecoes',
+  path: '/colecoes',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CatalogoRoute = CatalogoRouteImport.update({
+  id: '/catalogo',
+  path: '/catalogo',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CarrinhoRoute = CarrinhoRouteImport.update({
+  id: '/carrinho',
+  path: '/carrinho',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ProdutoIdRoute = ProdutoIdRouteImport.update({
+  id: '/produto/$id',
+  path: '/produto/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/carrinho': typeof CarrinhoRoute
+  '/catalogo': typeof CatalogoRoute
+  '/colecoes': typeof ColecoesRoute
+  '/contato': typeof ContatoRoute
+  '/favoritos': typeof FavoritosRoute
+  '/login': typeof LoginRoute
+  '/nova-colecao': typeof NovaColecaoRoute
+  '/sobre': typeof SobreRoute
+  '/produto/$id': typeof ProdutoIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/carrinho': typeof CarrinhoRoute
+  '/catalogo': typeof CatalogoRoute
+  '/colecoes': typeof ColecoesRoute
+  '/contato': typeof ContatoRoute
+  '/favoritos': typeof FavoritosRoute
+  '/login': typeof LoginRoute
+  '/nova-colecao': typeof NovaColecaoRoute
+  '/sobre': typeof SobreRoute
+  '/produto/$id': typeof ProdutoIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/carrinho': typeof CarrinhoRoute
+  '/catalogo': typeof CatalogoRoute
+  '/colecoes': typeof ColecoesRoute
+  '/contato': typeof ContatoRoute
+  '/favoritos': typeof FavoritosRoute
+  '/login': typeof LoginRoute
+  '/nova-colecao': typeof NovaColecaoRoute
+  '/sobre': typeof SobreRoute
+  '/produto/$id': typeof ProdutoIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/carrinho'
+    | '/catalogo'
+    | '/colecoes'
+    | '/contato'
+    | '/favoritos'
+    | '/login'
+    | '/nova-colecao'
+    | '/sobre'
+    | '/produto/$id'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/carrinho'
+    | '/catalogo'
+    | '/colecoes'
+    | '/contato'
+    | '/favoritos'
+    | '/login'
+    | '/nova-colecao'
+    | '/sobre'
+    | '/produto/$id'
+  id:
+    | '__root__'
+    | '/'
+    | '/carrinho'
+    | '/catalogo'
+    | '/colecoes'
+    | '/contato'
+    | '/favoritos'
+    | '/login'
+    | '/nova-colecao'
+    | '/sobre'
+    | '/produto/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  CarrinhoRoute: typeof CarrinhoRoute
+  CatalogoRoute: typeof CatalogoRoute
+  ColecoesRoute: typeof ColecoesRoute
+  ContatoRoute: typeof ContatoRoute
+  FavoritosRoute: typeof FavoritosRoute
+  LoginRoute: typeof LoginRoute
+  NovaColecaoRoute: typeof NovaColecaoRoute
+  SobreRoute: typeof SobreRoute
+  ProdutoIdRoute: typeof ProdutoIdRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/sobre': {
+      id: '/sobre'
+      path: '/sobre'
+      fullPath: '/sobre'
+      preLoaderRoute: typeof SobreRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/nova-colecao': {
+      id: '/nova-colecao'
+      path: '/nova-colecao'
+      fullPath: '/nova-colecao'
+      preLoaderRoute: typeof NovaColecaoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/favoritos': {
+      id: '/favoritos'
+      path: '/favoritos'
+      fullPath: '/favoritos'
+      preLoaderRoute: typeof FavoritosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contato': {
+      id: '/contato'
+      path: '/contato'
+      fullPath: '/contato'
+      preLoaderRoute: typeof ContatoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/colecoes': {
+      id: '/colecoes'
+      path: '/colecoes'
+      fullPath: '/colecoes'
+      preLoaderRoute: typeof ColecoesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/catalogo': {
+      id: '/catalogo'
+      path: '/catalogo'
+      fullPath: '/catalogo'
+      preLoaderRoute: typeof CatalogoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/carrinho': {
+      id: '/carrinho'
+      path: '/carrinho'
+      fullPath: '/carrinho'
+      preLoaderRoute: typeof CarrinhoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -48,11 +225,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/produto/$id': {
+      id: '/produto/$id'
+      path: '/produto/$id'
+      fullPath: '/produto/$id'
+      preLoaderRoute: typeof ProdutoIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  CarrinhoRoute: CarrinhoRoute,
+  CatalogoRoute: CatalogoRoute,
+  ColecoesRoute: ColecoesRoute,
+  ContatoRoute: ContatoRoute,
+  FavoritosRoute: FavoritosRoute,
+  LoginRoute: LoginRoute,
+  NovaColecaoRoute: NovaColecaoRoute,
+  SobreRoute: SobreRoute,
+  ProdutoIdRoute: ProdutoIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
