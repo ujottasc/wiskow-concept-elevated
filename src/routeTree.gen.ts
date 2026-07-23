@@ -9,38 +9,389 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as SobreRouteImport } from './routes/sobre'
+import { Route as NovaColecaoRouteImport } from './routes/nova-colecao'
+import { Route as LoginRouteImport } from './routes/login'
+import { Route as FavoritosRouteImport } from './routes/favoritos'
+import { Route as ContatoRouteImport } from './routes/contato'
+import { Route as ColecoesRouteImport } from './routes/colecoes'
+import { Route as CatalogoRouteImport } from './routes/catalogo'
+import { Route as CarrinhoRouteImport } from './routes/carrinho'
+import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AdminIndexRouteImport } from './routes/admin.index'
+import { Route as ProdutoIdRouteImport } from './routes/produto.$id'
+import { Route as AdminProdutosRouteImport } from './routes/admin.produtos'
+import { Route as AdminPerfilRouteImport } from './routes/admin.perfil'
+import { Route as AdminPedidosRouteImport } from './routes/admin.pedidos'
+import { Route as AdminPaginaInicialRouteImport } from './routes/admin.pagina-inicial'
+import { Route as AdminInstagramRouteImport } from './routes/admin.instagram'
+import { Route as AdminCuponsRouteImport } from './routes/admin.cupons'
+import { Route as AdminConteudoRouteImport } from './routes/admin.conteudo'
+import { Route as AdminConfiguracoesRouteImport } from './routes/admin.configuracoes'
+import { Route as AdminColecoesRouteImport } from './routes/admin.colecoes'
+import { Route as AdminClientesRouteImport } from './routes/admin.clientes'
+import { Route as AdminCategoriasRouteImport } from './routes/admin.categorias'
+import { Route as AdminBannersRouteImport } from './routes/admin.banners'
 
+const SobreRoute = SobreRouteImport.update({
+  id: '/sobre',
+  path: '/sobre',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NovaColecaoRoute = NovaColecaoRouteImport.update({
+  id: '/nova-colecao',
+  path: '/nova-colecao',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FavoritosRoute = FavoritosRouteImport.update({
+  id: '/favoritos',
+  path: '/favoritos',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContatoRoute = ContatoRouteImport.update({
+  id: '/contato',
+  path: '/contato',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ColecoesRoute = ColecoesRouteImport.update({
+  id: '/colecoes',
+  path: '/colecoes',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CatalogoRoute = CatalogoRouteImport.update({
+  id: '/catalogo',
+  path: '/catalogo',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CarrinhoRoute = CarrinhoRouteImport.update({
+  id: '/carrinho',
+  path: '/carrinho',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminIndexRoute = AdminIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AdminRoute,
+} as any)
+const ProdutoIdRoute = ProdutoIdRouteImport.update({
+  id: '/produto/$id',
+  path: '/produto/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminProdutosRoute = AdminProdutosRouteImport.update({
+  id: '/produtos',
+  path: '/produtos',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminPerfilRoute = AdminPerfilRouteImport.update({
+  id: '/perfil',
+  path: '/perfil',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminPedidosRoute = AdminPedidosRouteImport.update({
+  id: '/pedidos',
+  path: '/pedidos',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminPaginaInicialRoute = AdminPaginaInicialRouteImport.update({
+  id: '/pagina-inicial',
+  path: '/pagina-inicial',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminInstagramRoute = AdminInstagramRouteImport.update({
+  id: '/instagram',
+  path: '/instagram',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminCuponsRoute = AdminCuponsRouteImport.update({
+  id: '/cupons',
+  path: '/cupons',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminConteudoRoute = AdminConteudoRouteImport.update({
+  id: '/conteudo',
+  path: '/conteudo',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminConfiguracoesRoute = AdminConfiguracoesRouteImport.update({
+  id: '/configuracoes',
+  path: '/configuracoes',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminColecoesRoute = AdminColecoesRouteImport.update({
+  id: '/colecoes',
+  path: '/colecoes',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminClientesRoute = AdminClientesRouteImport.update({
+  id: '/clientes',
+  path: '/clientes',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminCategoriasRoute = AdminCategoriasRouteImport.update({
+  id: '/categorias',
+  path: '/categorias',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminBannersRoute = AdminBannersRouteImport.update({
+  id: '/banners',
+  path: '/banners',
+  getParentRoute: () => AdminRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRouteWithChildren
+  '/carrinho': typeof CarrinhoRoute
+  '/catalogo': typeof CatalogoRoute
+  '/colecoes': typeof ColecoesRoute
+  '/contato': typeof ContatoRoute
+  '/favoritos': typeof FavoritosRoute
+  '/login': typeof LoginRoute
+  '/nova-colecao': typeof NovaColecaoRoute
+  '/sobre': typeof SobreRoute
+  '/admin/banners': typeof AdminBannersRoute
+  '/admin/categorias': typeof AdminCategoriasRoute
+  '/admin/clientes': typeof AdminClientesRoute
+  '/admin/colecoes': typeof AdminColecoesRoute
+  '/admin/configuracoes': typeof AdminConfiguracoesRoute
+  '/admin/conteudo': typeof AdminConteudoRoute
+  '/admin/cupons': typeof AdminCuponsRoute
+  '/admin/instagram': typeof AdminInstagramRoute
+  '/admin/pagina-inicial': typeof AdminPaginaInicialRoute
+  '/admin/pedidos': typeof AdminPedidosRoute
+  '/admin/perfil': typeof AdminPerfilRoute
+  '/admin/produtos': typeof AdminProdutosRoute
+  '/produto/$id': typeof ProdutoIdRoute
+  '/admin/': typeof AdminIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/carrinho': typeof CarrinhoRoute
+  '/catalogo': typeof CatalogoRoute
+  '/colecoes': typeof ColecoesRoute
+  '/contato': typeof ContatoRoute
+  '/favoritos': typeof FavoritosRoute
+  '/login': typeof LoginRoute
+  '/nova-colecao': typeof NovaColecaoRoute
+  '/sobre': typeof SobreRoute
+  '/admin/banners': typeof AdminBannersRoute
+  '/admin/categorias': typeof AdminCategoriasRoute
+  '/admin/clientes': typeof AdminClientesRoute
+  '/admin/colecoes': typeof AdminColecoesRoute
+  '/admin/configuracoes': typeof AdminConfiguracoesRoute
+  '/admin/conteudo': typeof AdminConteudoRoute
+  '/admin/cupons': typeof AdminCuponsRoute
+  '/admin/instagram': typeof AdminInstagramRoute
+  '/admin/pagina-inicial': typeof AdminPaginaInicialRoute
+  '/admin/pedidos': typeof AdminPedidosRoute
+  '/admin/perfil': typeof AdminPerfilRoute
+  '/admin/produtos': typeof AdminProdutosRoute
+  '/produto/$id': typeof ProdutoIdRoute
+  '/admin': typeof AdminIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/admin': typeof AdminRouteWithChildren
+  '/carrinho': typeof CarrinhoRoute
+  '/catalogo': typeof CatalogoRoute
+  '/colecoes': typeof ColecoesRoute
+  '/contato': typeof ContatoRoute
+  '/favoritos': typeof FavoritosRoute
+  '/login': typeof LoginRoute
+  '/nova-colecao': typeof NovaColecaoRoute
+  '/sobre': typeof SobreRoute
+  '/admin/banners': typeof AdminBannersRoute
+  '/admin/categorias': typeof AdminCategoriasRoute
+  '/admin/clientes': typeof AdminClientesRoute
+  '/admin/colecoes': typeof AdminColecoesRoute
+  '/admin/configuracoes': typeof AdminConfiguracoesRoute
+  '/admin/conteudo': typeof AdminConteudoRoute
+  '/admin/cupons': typeof AdminCuponsRoute
+  '/admin/instagram': typeof AdminInstagramRoute
+  '/admin/pagina-inicial': typeof AdminPaginaInicialRoute
+  '/admin/pedidos': typeof AdminPedidosRoute
+  '/admin/perfil': typeof AdminPerfilRoute
+  '/admin/produtos': typeof AdminProdutosRoute
+  '/produto/$id': typeof ProdutoIdRoute
+  '/admin/': typeof AdminIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/admin'
+    | '/carrinho'
+    | '/catalogo'
+    | '/colecoes'
+    | '/contato'
+    | '/favoritos'
+    | '/login'
+    | '/nova-colecao'
+    | '/sobre'
+    | '/admin/banners'
+    | '/admin/categorias'
+    | '/admin/clientes'
+    | '/admin/colecoes'
+    | '/admin/configuracoes'
+    | '/admin/conteudo'
+    | '/admin/cupons'
+    | '/admin/instagram'
+    | '/admin/pagina-inicial'
+    | '/admin/pedidos'
+    | '/admin/perfil'
+    | '/admin/produtos'
+    | '/produto/$id'
+    | '/admin/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/carrinho'
+    | '/catalogo'
+    | '/colecoes'
+    | '/contato'
+    | '/favoritos'
+    | '/login'
+    | '/nova-colecao'
+    | '/sobre'
+    | '/admin/banners'
+    | '/admin/categorias'
+    | '/admin/clientes'
+    | '/admin/colecoes'
+    | '/admin/configuracoes'
+    | '/admin/conteudo'
+    | '/admin/cupons'
+    | '/admin/instagram'
+    | '/admin/pagina-inicial'
+    | '/admin/pedidos'
+    | '/admin/perfil'
+    | '/admin/produtos'
+    | '/produto/$id'
+    | '/admin'
+  id:
+    | '__root__'
+    | '/'
+    | '/admin'
+    | '/carrinho'
+    | '/catalogo'
+    | '/colecoes'
+    | '/contato'
+    | '/favoritos'
+    | '/login'
+    | '/nova-colecao'
+    | '/sobre'
+    | '/admin/banners'
+    | '/admin/categorias'
+    | '/admin/clientes'
+    | '/admin/colecoes'
+    | '/admin/configuracoes'
+    | '/admin/conteudo'
+    | '/admin/cupons'
+    | '/admin/instagram'
+    | '/admin/pagina-inicial'
+    | '/admin/pedidos'
+    | '/admin/perfil'
+    | '/admin/produtos'
+    | '/produto/$id'
+    | '/admin/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AdminRoute: typeof AdminRouteWithChildren
+  CarrinhoRoute: typeof CarrinhoRoute
+  CatalogoRoute: typeof CatalogoRoute
+  ColecoesRoute: typeof ColecoesRoute
+  ContatoRoute: typeof ContatoRoute
+  FavoritosRoute: typeof FavoritosRoute
+  LoginRoute: typeof LoginRoute
+  NovaColecaoRoute: typeof NovaColecaoRoute
+  SobreRoute: typeof SobreRoute
+  ProdutoIdRoute: typeof ProdutoIdRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/sobre': {
+      id: '/sobre'
+      path: '/sobre'
+      fullPath: '/sobre'
+      preLoaderRoute: typeof SobreRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/nova-colecao': {
+      id: '/nova-colecao'
+      path: '/nova-colecao'
+      fullPath: '/nova-colecao'
+      preLoaderRoute: typeof NovaColecaoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/favoritos': {
+      id: '/favoritos'
+      path: '/favoritos'
+      fullPath: '/favoritos'
+      preLoaderRoute: typeof FavoritosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contato': {
+      id: '/contato'
+      path: '/contato'
+      fullPath: '/contato'
+      preLoaderRoute: typeof ContatoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/colecoes': {
+      id: '/colecoes'
+      path: '/colecoes'
+      fullPath: '/colecoes'
+      preLoaderRoute: typeof ColecoesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/catalogo': {
+      id: '/catalogo'
+      path: '/catalogo'
+      fullPath: '/catalogo'
+      preLoaderRoute: typeof CatalogoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/carrinho': {
+      id: '/carrinho'
+      path: '/carrinho'
+      fullPath: '/carrinho'
+      preLoaderRoute: typeof CarrinhoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -48,22 +399,154 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/': {
+      id: '/admin/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AdminIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/produto/$id': {
+      id: '/produto/$id'
+      path: '/produto/$id'
+      fullPath: '/produto/$id'
+      preLoaderRoute: typeof ProdutoIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/produtos': {
+      id: '/admin/produtos'
+      path: '/produtos'
+      fullPath: '/admin/produtos'
+      preLoaderRoute: typeof AdminProdutosRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/perfil': {
+      id: '/admin/perfil'
+      path: '/perfil'
+      fullPath: '/admin/perfil'
+      preLoaderRoute: typeof AdminPerfilRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/pedidos': {
+      id: '/admin/pedidos'
+      path: '/pedidos'
+      fullPath: '/admin/pedidos'
+      preLoaderRoute: typeof AdminPedidosRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/pagina-inicial': {
+      id: '/admin/pagina-inicial'
+      path: '/pagina-inicial'
+      fullPath: '/admin/pagina-inicial'
+      preLoaderRoute: typeof AdminPaginaInicialRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/instagram': {
+      id: '/admin/instagram'
+      path: '/instagram'
+      fullPath: '/admin/instagram'
+      preLoaderRoute: typeof AdminInstagramRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/cupons': {
+      id: '/admin/cupons'
+      path: '/cupons'
+      fullPath: '/admin/cupons'
+      preLoaderRoute: typeof AdminCuponsRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/conteudo': {
+      id: '/admin/conteudo'
+      path: '/conteudo'
+      fullPath: '/admin/conteudo'
+      preLoaderRoute: typeof AdminConteudoRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/configuracoes': {
+      id: '/admin/configuracoes'
+      path: '/configuracoes'
+      fullPath: '/admin/configuracoes'
+      preLoaderRoute: typeof AdminConfiguracoesRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/colecoes': {
+      id: '/admin/colecoes'
+      path: '/colecoes'
+      fullPath: '/admin/colecoes'
+      preLoaderRoute: typeof AdminColecoesRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/clientes': {
+      id: '/admin/clientes'
+      path: '/clientes'
+      fullPath: '/admin/clientes'
+      preLoaderRoute: typeof AdminClientesRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/categorias': {
+      id: '/admin/categorias'
+      path: '/categorias'
+      fullPath: '/admin/categorias'
+      preLoaderRoute: typeof AdminCategoriasRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/banners': {
+      id: '/admin/banners'
+      path: '/banners'
+      fullPath: '/admin/banners'
+      preLoaderRoute: typeof AdminBannersRouteImport
+      parentRoute: typeof AdminRoute
+    }
   }
 }
 
+interface AdminRouteChildren {
+  AdminBannersRoute: typeof AdminBannersRoute
+  AdminCategoriasRoute: typeof AdminCategoriasRoute
+  AdminClientesRoute: typeof AdminClientesRoute
+  AdminColecoesRoute: typeof AdminColecoesRoute
+  AdminConfiguracoesRoute: typeof AdminConfiguracoesRoute
+  AdminConteudoRoute: typeof AdminConteudoRoute
+  AdminCuponsRoute: typeof AdminCuponsRoute
+  AdminInstagramRoute: typeof AdminInstagramRoute
+  AdminPaginaInicialRoute: typeof AdminPaginaInicialRoute
+  AdminPedidosRoute: typeof AdminPedidosRoute
+  AdminPerfilRoute: typeof AdminPerfilRoute
+  AdminProdutosRoute: typeof AdminProdutosRoute
+  AdminIndexRoute: typeof AdminIndexRoute
+}
+
+const AdminRouteChildren: AdminRouteChildren = {
+  AdminBannersRoute: AdminBannersRoute,
+  AdminCategoriasRoute: AdminCategoriasRoute,
+  AdminClientesRoute: AdminClientesRoute,
+  AdminColecoesRoute: AdminColecoesRoute,
+  AdminConfiguracoesRoute: AdminConfiguracoesRoute,
+  AdminConteudoRoute: AdminConteudoRoute,
+  AdminCuponsRoute: AdminCuponsRoute,
+  AdminInstagramRoute: AdminInstagramRoute,
+  AdminPaginaInicialRoute: AdminPaginaInicialRoute,
+  AdminPedidosRoute: AdminPedidosRoute,
+  AdminPerfilRoute: AdminPerfilRoute,
+  AdminProdutosRoute: AdminProdutosRoute,
+  AdminIndexRoute: AdminIndexRoute,
+}
+
+const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AdminRoute: AdminRouteWithChildren,
+  CarrinhoRoute: CarrinhoRoute,
+  CatalogoRoute: CatalogoRoute,
+  ColecoesRoute: ColecoesRoute,
+  ContatoRoute: ContatoRoute,
+  FavoritosRoute: FavoritosRoute,
+  LoginRoute: LoginRoute,
+  NovaColecaoRoute: NovaColecaoRoute,
+  SobreRoute: SobreRoute,
+  ProdutoIdRoute: ProdutoIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
