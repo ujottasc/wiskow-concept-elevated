@@ -35,18 +35,14 @@ function LoginPage() {
 
   return (
     <div className="min-h-screen grid md:grid-cols-2 bg-background">
-      <div className="relative hidden md:block overflow-hidden">
-        <img
-          src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=1400&q=80"
-          alt=""
-          className="absolute inset-0 h-full w-full object-cover"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
-        <div className="absolute bottom-12 left-12 right-12 text-white">
+      <div className="relative hidden md:flex items-center justify-center overflow-hidden bg-[#fdb9e2]">
+        <Logo variant="mark" className="h-[52%] opacity-90" />
+        <div className="absolute bottom-12 left-12 right-12">
           <p className="eyebrow">Wiskow Concept</p>
           <h2 className="font-serif text-5xl mt-4 leading-tight">Uma nova estação.<br/>Um novo capítulo.</h2>
         </div>
       </div>
+
 
       <div className="flex items-center justify-center px-6 py-16">
         <motion.div
