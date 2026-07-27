@@ -9,6 +9,8 @@ import {
   Link,
 } from "@tanstack/react-router";
 import { useEffect, type ReactNode } from "react";
+import markIcon from "@/assets/wiskow-mark.png.asset.json";
+
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
