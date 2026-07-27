@@ -1,6 +1,8 @@
 import { Link } from "@tanstack/react-router";
 import { Instagram } from "lucide-react";
 import { useStore } from "@/lib/store";
+import { Logo } from "@/components/Logo";
+
 
 export function Footer() {
   const { settings } = useStore();
