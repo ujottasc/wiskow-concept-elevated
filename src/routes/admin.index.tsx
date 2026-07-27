@@ -35,7 +35,7 @@ function Dashboard() {
                 <Icon className="h-4 w-4 text-muted-foreground" />
               </div>
               <p className="mt-4 font-serif text-3xl">{s.value}</p>
-              <p className="mt-2 text-xs text-accent inline-flex items-center gap-1"><ArrowUpRight className="h-3 w-3" /> {s.delta}</p>
+              <p className="mt-2 text-xs text-petal inline-flex items-center gap-1"><ArrowUpRight className="h-3 w-3" /> {s.delta}</p>
             </motion.div>
           );
         })}

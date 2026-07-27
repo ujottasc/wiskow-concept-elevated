@@ -49,7 +49,7 @@
   --ink: #0e0b0d;
   --rose: #fdb9e2;
   --blush: #ffd9ef;
-  --petal: #f58fca;
+  --petal: #c94a91;
 
   --background: #fff7fb;
   --foreground: #0e0b0d;
@@ -69,7 +69,7 @@
   --destructive-foreground: #ffffff;
   --border: #f4dcea;
   --input: #f4dcea;
-  --ring: #f58fca;
+  --ring: #c94a91;
 }
 
 .dark {
