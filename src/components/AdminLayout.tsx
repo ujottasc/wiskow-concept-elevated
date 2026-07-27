@@ -30,7 +30,7 @@ export function AdminLayout() {
     <div className="min-h-screen bg-background flex">
       <aside className="w-64 shrink-0 border-r border-border bg-background sticky top-0 h-screen overflow-y-auto hidden lg:flex flex-col">
         <div className="p-6 border-b border-border">
-          <Link to="/" className="font-serif text-xl tracking-[0.2em]">WISKOW</Link>
+          <Link to="/" aria-label="Wiskow Concept"><Logo className="h-12" /></Link>
           <p className="mt-1 text-[10px] uppercase tracking-[0.22em] text-muted-foreground">Admin</p>
         </div>
         <nav className="flex-1 p-3 space-y-0.5">
