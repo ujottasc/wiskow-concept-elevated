@@ -144,8 +144,9 @@
 }
 
 ::selection {
-  background: #c48a8a;
-  color: #fff;
+  background: var(--rose);
+  color: var(--ink);
 }
+
 
 html { scroll-behavior: smooth; }
