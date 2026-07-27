@@ -37,7 +37,7 @@ function LoginPage() {
 
   return (
     <div className="min-h-screen grid md:grid-cols-2 bg-background">
-      <div className="relative hidden md:flex items-center justify-center overflow-hidden bg-[#fdb9e2]">
+      <div className="relative hidden md:flex items-center justify-center overflow-hidden bg-rose">
         <Logo variant="mark" className="max-h-[40%] max-w-[45%]" />
         <div className="absolute bottom-12 left-12 right-12">
           <p className="eyebrow">Wiskow Concept</p>
