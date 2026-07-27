@@ -4,6 +4,8 @@ import {
   Ticket, Image, Home, FileText, Instagram, Settings, User, LogOut,
 } from "lucide-react";
 import { useStore } from "@/lib/store";
+import { Logo } from "@/components/Logo";
+
 
 type MenuItem = { to: string; label: string; icon: typeof LayoutDashboard; exact?: boolean };
 const MENU: MenuItem[] = [
@@ -30,7 +32,7 @@ export function AdminLayout() {
     <div className="min-h-screen bg-background flex">
       <aside className="w-64 shrink-0 border-r border-border bg-background sticky top-0 h-screen overflow-y-auto hidden lg:flex flex-col">
         <div className="p-6 border-b border-border">
-          <Link to="/" className="font-serif text-xl tracking-[0.2em]">WISKOW</Link>
+          <Link to="/" aria-label="Wiskow Concept"><Logo className="h-12" /></Link>
           <p className="mt-1 text-[10px] uppercase tracking-[0.22em] text-muted-foreground">Admin</p>
         </div>
         <nav className="flex-1 p-3 space-y-0.5">
@@ -59,7 +61,10 @@ export function AdminLayout() {
 
       <div className="flex-1 min-w-0">
         <header className="lg:hidden sticky top-0 z-30 border-b border-border bg-background/90 backdrop-blur px-4 py-3 flex items-center justify-between">
-          <Link to="/" className="font-serif tracking-[0.2em]">WISKOW · Admin</Link>
+          <Link to="/" aria-label="Wiskow Concept" className="inline-flex items-center gap-2">
+            <Logo variant="mark" className="h-7" />
+            <span className="text-[10px] uppercase tracking-[0.22em] text-muted-foreground">Admin</span>
+          </Link>
           <button onClick={logout} className="text-xs uppercase tracking-[0.22em]">Sair</button>
         </header>
         <main className="p-6 md:p-10">

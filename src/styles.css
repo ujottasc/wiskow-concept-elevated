@@ -36,56 +36,62 @@
   --color-graphite: var(--graphite);
   --color-ink: var(--ink);
   --color-rose: var(--rose);
+  --color-blush: var(--blush);
+  --color-petal: var(--petal);
 }
 
 :root {
   --radius: 0.5rem;
-  --offwhite: #faf8f6;
-  --warmgray: #eae4de;
-  --graphite: #222222;
-  --ink: #111111;
-  --rose: #c48a8a;
+  /* Identidade Wiskow Concept — rosa da assinatura + traço preto */
+  --offwhite: #fff7fb;
+  --warmgray: #f6dfec;
+  --graphite: #2a1f26;
+  --ink: #0e0b0d;
+  --rose: #fdb9e2;
+  --blush: #ffd9ef;
+  --petal: #c94a91;
 
-  --background: #faf8f6;
-  --foreground: #111111;
+  --background: #fff7fb;
+  --foreground: #0e0b0d;
   --card: #ffffff;
-  --card-foreground: #111111;
+  --card-foreground: #0e0b0d;
   --popover: #ffffff;
-  --popover-foreground: #111111;
-  --primary: #111111;
-  --primary-foreground: #faf8f6;
-  --secondary: #eae4de;
-  --secondary-foreground: #222222;
-  --muted: #f2ede8;
-  --muted-foreground: #6b6560;
-  --accent: #c48a8a;
-  --accent-foreground: #ffffff;
+  --popover-foreground: #0e0b0d;
+  --primary: #0e0b0d;
+  --primary-foreground: #fff7fb;
+  --secondary: #ffd9ef;
+  --secondary-foreground: #2a1f26;
+  --muted: #fdeef6;
+  --muted-foreground: #7a6270;
+  --accent: #fdb9e2;
+  --accent-foreground: #0e0b0d;
   --destructive: oklch(0.577 0.245 27.325);
   --destructive-foreground: #ffffff;
-  --border: #e6e0d9;
-  --input: #e6e0d9;
-  --ring: #c48a8a;
+  --border: #f4dcea;
+  --input: #f4dcea;
+  --ring: #c94a91;
 }
 
 .dark {
-  --background: #111111;
-  --foreground: #faf8f6;
-  --card: #1a1a1a;
-  --card-foreground: #faf8f6;
-  --popover: #1a1a1a;
-  --popover-foreground: #faf8f6;
-  --primary: #faf8f6;
-  --primary-foreground: #111111;
-  --secondary: #222222;
-  --secondary-foreground: #faf8f6;
-  --muted: #222222;
-  --muted-foreground: #a09a94;
-  --accent: #c48a8a;
-  --accent-foreground: #111111;
-  --border: rgba(255, 255, 255, 0.08);
-  --input: rgba(255, 255, 255, 0.12);
-  --ring: #c48a8a;
+  --background: #0e0b0d;
+  --foreground: #fff7fb;
+  --card: #171215;
+  --card-foreground: #fff7fb;
+  --popover: #171215;
+  --popover-foreground: #fff7fb;
+  --primary: #fdb9e2;
+  --primary-foreground: #0e0b0d;
+  --secondary: #241a20;
+  --secondary-foreground: #fff7fb;
+  --muted: #241a20;
+  --muted-foreground: #b9a2ae;
+  --accent: #fdb9e2;
+  --accent-foreground: #0e0b0d;
+  --border: rgba(253, 185, 226, 0.14);
+  --input: rgba(253, 185, 226, 0.2);
+  --ring: #fdb9e2;
 }
+
 
 @layer base {
   * {
@@ -138,8 +144,9 @@
 }
 
 ::selection {
-  background: #c48a8a;
-  color: #fff;
+  background: var(--rose);
+  color: var(--ink);
 }
+
 
 html { scroll-behavior: smooth; }
