@@ -50,9 +50,10 @@ export function Navbar({ transparentOnTop = false }: { transparentOnTop?: boolea
               </Link>
             ))}
           </nav>
-          <Link to="/" className="font-serif text-xl md:text-2xl tracking-[0.2em] absolute left-1/2 -translate-x-1/2">
-            WISKOW
+          <Link to="/" aria-label="Wiskow Concept" className="absolute left-1/2 -translate-x-1/2">
+            <Logo light={isTransparent} className="h-9 md:h-11" />
           </Link>
+
           <div className="flex items-center gap-4 md:gap-5 flex-1 justify-end">
             <Link to="/catalogo" aria-label="Buscar" className="hidden md:inline-flex">
               <Search className="h-4 w-4" />
