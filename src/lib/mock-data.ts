@@ -194,7 +194,7 @@ export const defaultSettings: Settings = {
   whatsapp: "5551997593705",
   instagram: "wiskow.concept",
   logo: "/__l5e/assets-v1/d19089d1-ca9c-47f7-8d3c-901d4ab93959/wiskow-wordmark.png",
-  primaryColor: "#c48a8a",
+  primaryColor: "#fdb9e2",
   heroBannerId: "b1",
   featuredCollectionIds: ["atelier-25", "essenciais", "noite"],
   featuredProductIds: ["p1", "p2", "p6", "p4"],
