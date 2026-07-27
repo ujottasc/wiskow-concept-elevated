@@ -10,7 +10,7 @@ export function Footer() {
     <footer className="border-t border-border mt-24 bg-background">
       <div className="container-x py-16 grid gap-12 md:grid-cols-4">
         <div>
-          <h4 className="font-serif text-2xl tracking-[0.15em]">WISKOW</h4>
+          <Logo className="h-16" />
           <p className="mt-4 text-sm text-muted-foreground max-w-xs">
             Moda feminina contemporânea. Peças atemporais para mulheres que desenham a própria narrativa.
           </p>
