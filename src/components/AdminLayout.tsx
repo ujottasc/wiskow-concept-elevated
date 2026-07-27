@@ -61,7 +61,10 @@ export function AdminLayout() {
 
       <div className="flex-1 min-w-0">
         <header className="lg:hidden sticky top-0 z-30 border-b border-border bg-background/90 backdrop-blur px-4 py-3 flex items-center justify-between">
-          <Link to="/" className="font-serif tracking-[0.2em]">WISKOW · Admin</Link>
+          <Link to="/" aria-label="Wiskow Concept" className="inline-flex items-center gap-2">
+            <Logo variant="mark" className="h-7" />
+            <span className="text-[10px] uppercase tracking-[0.22em] text-muted-foreground">Admin</span>
+          </Link>
           <button onClick={logout} className="text-xs uppercase tracking-[0.22em]">Sair</button>
         </header>
         <main className="p-6 md:p-10">
