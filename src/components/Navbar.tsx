@@ -95,7 +95,7 @@ export function Navbar({ transparentOnTop = false }: { transparentOnTop?: boolea
             className="fixed inset-0 z-50 bg-background text-foreground"
           >
             <div className="container-x flex items-center justify-between h-16">
-              <span className="font-serif text-xl tracking-[0.2em]">WISKOW</span>
+              <Logo className="h-8" />
               <button onClick={() => setOpen(false)} aria-label="Fechar"><X className="h-5 w-5" /></button>
             </div>
             <div className="container-x mt-12 flex flex-col gap-6">
