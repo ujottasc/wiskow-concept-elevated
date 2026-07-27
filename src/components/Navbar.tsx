@@ -2,6 +2,8 @@ import { Link, useRouterState } from "@tanstack/react-router";
 import { Heart, ShoppingBag, User, Menu, X, Search } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useStore } from "@/lib/store";
+import { Logo } from "@/components/Logo";
+
 import { motion, AnimatePresence } from "framer-motion";
 
 const NAV = [
