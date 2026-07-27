@@ -4,6 +4,8 @@ import {
   Ticket, Image, Home, FileText, Instagram, Settings, User, LogOut,
 } from "lucide-react";
 import { useStore } from "@/lib/store";
+import { Logo } from "@/components/Logo";
+
 
 type MenuItem = { to: string; label: string; icon: typeof LayoutDashboard; exact?: boolean };
 const MENU: MenuItem[] = [
