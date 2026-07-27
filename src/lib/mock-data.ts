@@ -193,7 +193,7 @@ export const defaultSettings: Settings = {
   storeName: "Wiskow Concept",
   whatsapp: "5551997593705",
   instagram: "wiskow.concept",
-  logo: "",
+  logo: "/__l5e/assets-v1/d19089d1-ca9c-47f7-8d3c-901d4ab93959/wiskow-wordmark.png",
   primaryColor: "#c48a8a",
   heroBannerId: "b1",
   featuredCollectionIds: ["atelier-25", "essenciais", "noite"],
