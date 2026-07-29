@@ -30,7 +30,7 @@ function NovaColecao() {
               initial={{ scale: 1.08 }} animate={{ scale: 1 }} transition={{ duration: 2, ease: [0.22, 1, 0.36, 1] }}
               src={col.image} alt={col.name} className="absolute inset-0 h-full w-full object-cover"
             />
-            <div className="absolute inset-0 bg-black/25" />
+            <div className="absolute inset-0 bg-black/45" />
           </>
         )}
         <div className="relative h-full container-x flex flex-col justify-end pb-20 text-white">
