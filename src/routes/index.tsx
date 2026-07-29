@@ -4,20 +4,24 @@ import { ArrowRight, Instagram } from "lucide-react";
 import { SiteLayout } from "@/components/SiteLayout";
 import { ProductCard } from "@/components/ProductCard";
 import { useStore } from "@/lib/store";
+import { IMG } from "@/lib/brand-images";
+
+const OG_IMAGE = `https://wiskow-concept-elevated.lovable.app${IMG.bodyCutout}`;
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
       { title: "Wiskow Concept — Moda Feminina Contemporânea" },
-      { name: "description", content: "Peças atemporais em linho, seda e cashmere. Descubra a nova coleção Atelier 25." },
+      { name: "description", content: "Malha segunda pele, bodies, conjuntos e denim. Conheça a nova coleção Wiskow Concept." },
       { property: "og:title", content: "Wiskow Concept" },
-      { property: "og:description", content: "Peças atemporais em linho, seda e cashmere." },
-      { property: "og:image", content: "https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=1600&q=80" },
-      { name: "twitter:image", content: "https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=1600&q=80" },
+      { property: "og:description", content: "Malha segunda pele, bodies, conjuntos e denim." },
+      { property: "og:image", content: OG_IMAGE },
+      { name: "twitter:image", content: OG_IMAGE },
     ],
   }),
   component: Home,
 });
+
 
 function Home() {
   const { banners, settings, collections, products, categories } = useStore();
@@ -36,7 +40,7 @@ function Home() {
               src={hero.image} alt={hero.title}
               className="absolute inset-0 h-full w-full object-cover"
             />
-            <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/10 to-black/50" />
+            <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/25 to-black/75" />
           </>
         )}
         <div className="relative h-full container-x flex flex-col justify-end pb-20 md:pb-28 text-white">
@@ -147,17 +151,18 @@ function Home() {
       <section className="container-x py-24">
         <div className="grid gap-4 md:grid-cols-3">
           <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ duration: 0.9 }} className="md:row-span-2 aspect-[3/4] md:aspect-auto overflow-hidden">
-            <img src="https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=900&q=80" alt="" className="h-full w-full object-cover" />
+            <img src={IMG.conjuntoOff} alt="Conjunto cropped e saia off white Wiskow Concept" className="h-full w-full object-cover" loading="lazy" />
           </motion.div>
           <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ duration: 0.9, delay: 0.1 }} className="aspect-square overflow-hidden">
-            <img src="https://images.unsplash.com/photo-1469334031218-e382a71b716b?auto=format&fit=crop&w=900&q=80" alt="" className="h-full w-full object-cover" />
+            <img src={IMG.chocolateLook} alt="Blusa segunda pele chocolate com jeans" className="h-full w-full object-cover" loading="lazy" />
           </motion.div>
           <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ duration: 0.9, delay: 0.2 }} className="aspect-square overflow-hidden">
-            <img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=900&q=80" alt="" className="h-full w-full object-cover" />
+            <img src={IMG.amarracaoCostas} alt="Blusa com amarração nas costas" className="h-full w-full object-cover" loading="lazy" />
           </motion.div>
           <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ duration: 0.9, delay: 0.3 }} className="md:col-span-2 aspect-[2/1] overflow-hidden">
-            <img src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=1600&q=80" alt="" className="h-full w-full object-cover" />
+            <img src={IMG.neon} alt="Editorial neon Wiskow Concept" className="h-full w-full object-cover" loading="lazy" />
           </motion.div>
+
         </div>
       </section>
 

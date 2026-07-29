@@ -1,6 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { SiteLayout } from "@/components/SiteLayout";
+import { IMG } from "@/lib/brand-images";
+
 
 export const Route = createFileRoute("/sobre")({
   head: () => ({
@@ -24,7 +26,7 @@ function Sobre() {
 
       <section className="container-x pb-24">
         <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ duration: 1 }} className="aspect-[16/9] md:aspect-[21/9] overflow-hidden">
-          <img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=2000&q=80" alt="" className="h-full w-full object-cover" />
+          <img src={IMG.neonAlt} alt="Editorial Wiskow Concept em luz neon" className="h-full w-full object-cover" />
         </motion.div>
       </section>
 
@@ -40,9 +42,10 @@ function Sobre() {
       </section>
 
       <section className="container-x pb-24 grid gap-6 md:grid-cols-3">
-        <div className="aspect-[3/4] overflow-hidden"><img src="https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=900&q=80" className="h-full w-full object-cover" alt="" /></div>
-        <div className="aspect-[3/4] overflow-hidden md:mt-16"><img src="https://images.unsplash.com/photo-1469334031218-e382a71b716b?auto=format&fit=crop&w=900&q=80" className="h-full w-full object-cover" alt="" /></div>
-        <div className="aspect-[3/4] overflow-hidden"><img src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=900&q=80" className="h-full w-full object-cover" alt="" /></div>
+        <div className="aspect-[3/4] overflow-hidden"><img src={IMG.caneladaOffLook} className="h-full w-full object-cover" alt="Blusa canelada off white com jeans wide" loading="lazy" /></div>
+        <div className="aspect-[3/4] overflow-hidden md:mt-16"><img src={IMG.vestidoCurtoCostas} className="h-full w-full object-cover" alt="Vestido curto preto de costas" loading="lazy" /></div>
+        <div className="aspect-[3/4] overflow-hidden"><img src={IMG.conjuntoCutout} className="h-full w-full object-cover" alt="Conjunto cut-out preto" loading="lazy" /></div>
+
       </section>
 
       <section className="container-x pb-24 max-w-3xl mx-auto text-center">

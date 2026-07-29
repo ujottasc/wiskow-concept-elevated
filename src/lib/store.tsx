@@ -91,27 +91,27 @@ export function StoreProvider({ children }: { children: ReactNode }) {
   const [settings, setSettings] = useState<Settings>(defaultSettings);
 
   useEffect(() => {
-    setUser(read<User | null>("wk:user", null));
-    setProducts(read("wk:products", seedProducts));
-    setCollections(read("wk:collections", seedCollections));
-    setCategories(read("wk:categories", seedCategories));
-    setBanners(read("wk:banners", seedBanners));
-    setCoupons(read("wk:coupons", seedCoupons));
-    setFavorites(read("wk:favorites", []));
-    setCart(read("wk:cart", []));
-    setSettings(read("wk:settings", defaultSettings));
+    setUser(read<User | null>("wk2:user", null));
+    setProducts(read("wk2:products", seedProducts));
+    setCollections(read("wk2:collections", seedCollections));
+    setCategories(read("wk2:categories", seedCategories));
+    setBanners(read("wk2:banners", seedBanners));
+    setCoupons(read("wk2:coupons", seedCoupons));
+    setFavorites(read("wk2:favorites", []));
+    setCart(read("wk2:cart", []));
+    setSettings(read("wk2:settings", defaultSettings));
     setHydrated(true);
   }, []);
 
-  useEffect(() => { if (hydrated) write("wk:user", user); }, [user, hydrated]);
-  useEffect(() => { if (hydrated) write("wk:products", products); }, [products, hydrated]);
-  useEffect(() => { if (hydrated) write("wk:collections", collections); }, [collections, hydrated]);
-  useEffect(() => { if (hydrated) write("wk:categories", categories); }, [categories, hydrated]);
-  useEffect(() => { if (hydrated) write("wk:banners", banners); }, [banners, hydrated]);
-  useEffect(() => { if (hydrated) write("wk:coupons", coupons); }, [coupons, hydrated]);
-  useEffect(() => { if (hydrated) write("wk:favorites", favorites); }, [favorites, hydrated]);
-  useEffect(() => { if (hydrated) write("wk:cart", cart); }, [cart, hydrated]);
-  useEffect(() => { if (hydrated) write("wk:settings", settings); }, [settings, hydrated]);
+  useEffect(() => { if (hydrated) write("wk2:user", user); }, [user, hydrated]);
+  useEffect(() => { if (hydrated) write("wk2:products", products); }, [products, hydrated]);
+  useEffect(() => { if (hydrated) write("wk2:collections", collections); }, [collections, hydrated]);
+  useEffect(() => { if (hydrated) write("wk2:categories", categories); }, [categories, hydrated]);
+  useEffect(() => { if (hydrated) write("wk2:banners", banners); }, [banners, hydrated]);
+  useEffect(() => { if (hydrated) write("wk2:coupons", coupons); }, [coupons, hydrated]);
+  useEffect(() => { if (hydrated) write("wk2:favorites", favorites); }, [favorites, hydrated]);
+  useEffect(() => { if (hydrated) write("wk2:cart", cart); }, [cart, hydrated]);
+  useEffect(() => { if (hydrated) write("wk2:settings", settings); }, [settings, hydrated]);
 
   const value: StoreCtx = {
     user,
