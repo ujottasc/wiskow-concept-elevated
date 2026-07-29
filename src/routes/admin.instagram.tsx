@@ -1,22 +1,15 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { PageHeader } from "@/components/AdminLayout";
 import { useStore } from "@/lib/store";
+import { instagramFeed } from "@/lib/brand-images";
 import { Instagram as IG } from "lucide-react";
 
 export const Route = createFileRoute("/admin/instagram")({
   component: InstagramAdmin,
 });
 
-const FEED = [
-  "photo-1490481651871-ab68de25d43d",
-  "photo-1483985988355-763728e1935b",
-  "photo-1469334031218-e382a71b716b",
-  "photo-1441986300917-64674bd600d8",
-  "photo-1583744946564-b52ac1c389c8",
-  "photo-1595777457583-95e059d581b8",
-  "photo-1594633312681-425c7b97ccd1",
-  "photo-1485462537746-965f33f7f6a7",
-];
+const FEED = instagramFeed;
+
 
 function InstagramAdmin() {
   const { settings } = useStore();
