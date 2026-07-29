@@ -26,7 +26,7 @@ function Sobre() {
 
       <section className="container-x pb-24">
         <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ duration: 1 }} className="aspect-[16/9] md:aspect-[21/9] overflow-hidden">
-          <img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=2000&q=80" alt="" className="h-full w-full object-cover" />
+          <img src={IMG.neonAlt} alt="Editorial Wiskow Concept em luz neon" className="h-full w-full object-cover" />
         </motion.div>
       </section>
 
