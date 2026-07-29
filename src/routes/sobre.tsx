@@ -1,6 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { SiteLayout } from "@/components/SiteLayout";
+import { IMG } from "@/lib/brand-images";
+
 
 export const Route = createFileRoute("/sobre")({
   head: () => ({
