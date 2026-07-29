@@ -40,7 +40,7 @@ function Home() {
               src={hero.image} alt={hero.title}
               className="absolute inset-0 h-full w-full object-cover"
             />
-            <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/10 to-black/50" />
+            <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/25 to-black/75" />
           </>
         )}
         <div className="relative h-full container-x flex flex-col justify-end pb-20 md:pb-28 text-white">
