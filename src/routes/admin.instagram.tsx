@@ -25,11 +25,12 @@ function InstagramAdmin() {
           </div>
         </div>
         <div className="grid grid-cols-4 gap-2">
-          {FEED.map(id => (
-            <div key={id} className="aspect-square overflow-hidden">
-              <img src={`https://images.unsplash.com/${id}?auto=format&fit=crop&w=400&q=80`} alt="" className="h-full w-full object-cover" />
+          {FEED.map(src => (
+            <div key={src} className="aspect-square overflow-hidden">
+              <img src={src} alt="Publicação Wiskow Concept" className="h-full w-full object-cover" loading="lazy" />
             </div>
           ))}
+
         </div>
       </div>
     </div>
