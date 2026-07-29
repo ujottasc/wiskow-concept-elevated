@@ -151,17 +151,18 @@ function Home() {
       <section className="container-x py-24">
         <div className="grid gap-4 md:grid-cols-3">
           <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ duration: 0.9 }} className="md:row-span-2 aspect-[3/4] md:aspect-auto overflow-hidden">
-            <img src="https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=900&q=80" alt="" className="h-full w-full object-cover" />
+            <img src={IMG.conjuntoOff} alt="Conjunto cropped e saia off white Wiskow Concept" className="h-full w-full object-cover" loading="lazy" />
           </motion.div>
           <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ duration: 0.9, delay: 0.1 }} className="aspect-square overflow-hidden">
-            <img src="https://images.unsplash.com/photo-1469334031218-e382a71b716b?auto=format&fit=crop&w=900&q=80" alt="" className="h-full w-full object-cover" />
+            <img src={IMG.chocolateLook} alt="Blusa segunda pele chocolate com jeans" className="h-full w-full object-cover" loading="lazy" />
           </motion.div>
           <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ duration: 0.9, delay: 0.2 }} className="aspect-square overflow-hidden">
-            <img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=900&q=80" alt="" className="h-full w-full object-cover" />
+            <img src={IMG.amarracaoCostas} alt="Blusa com amarração nas costas" className="h-full w-full object-cover" loading="lazy" />
           </motion.div>
           <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ duration: 0.9, delay: 0.3 }} className="md:col-span-2 aspect-[2/1] overflow-hidden">
-            <img src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=1600&q=80" alt="" className="h-full w-full object-cover" />
+            <img src={IMG.neon} alt="Editorial neon Wiskow Concept" className="h-full w-full object-cover" loading="lazy" />
           </motion.div>
+
         </div>
       </section>
 
