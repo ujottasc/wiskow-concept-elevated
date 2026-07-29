@@ -4,20 +4,24 @@ import { ArrowRight, Instagram } from "lucide-react";
 import { SiteLayout } from "@/components/SiteLayout";
 import { ProductCard } from "@/components/ProductCard";
 import { useStore } from "@/lib/store";
+import { IMG } from "@/lib/brand-images";
+
+const OG_IMAGE = `https://wiskow-concept-elevated.lovable.app${IMG.bodyCutout}`;
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
       { title: "Wiskow Concept — Moda Feminina Contemporânea" },
-      { name: "description", content: "Peças atemporais em linho, seda e cashmere. Descubra a nova coleção Atelier 25." },
+      { name: "description", content: "Malha segunda pele, bodies, conjuntos e denim. Conheça a nova coleção Wiskow Concept." },
       { property: "og:title", content: "Wiskow Concept" },
-      { property: "og:description", content: "Peças atemporais em linho, seda e cashmere." },
-      { property: "og:image", content: "https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=1600&q=80" },
-      { name: "twitter:image", content: "https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=1600&q=80" },
+      { property: "og:description", content: "Malha segunda pele, bodies, conjuntos e denim." },
+      { property: "og:image", content: OG_IMAGE },
+      { name: "twitter:image", content: OG_IMAGE },
     ],
   }),
   component: Home,
 });
+
 
 function Home() {
   const { banners, settings, collections, products, categories } = useStore();
