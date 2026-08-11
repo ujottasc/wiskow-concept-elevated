@@ -10,11 +10,12 @@ import {
 } from "@tanstack/react-router";
 import { useEffect, type ReactNode } from "react";
 import markIcon from "@/assets/wiskow-mark.png.asset.json";
+import { Toaster } from "@/components/ui/sonner";
 
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
-import { StoreProvider, useStore } from "../lib/store";
+import { StoreProvider } from "../lib/store";
 
 function NotFoundComponent() {
   return (
