@@ -81,9 +81,15 @@ export function Navbar({ transparentOnTop = false }: { transparentOnTop?: boolea
                 </span>
               )}
             </button>
-            <button aria-label="Sair" onClick={logout} className="hidden md:inline">
-              <User className="h-4 w-4" />
-            </button>
+            {user ? (
+              <button aria-label="Sair" onClick={() => { void logout(); }} className="hidden md:inline">
+                <User className="h-4 w-4" />
+              </button>
+            ) : (
+              <Link to="/login" aria-label="Entrar" className="hidden md:inline">
+                <User className="h-4 w-4" />
+              </Link>
+            )}
           </div>
         </div>
       </header>
@@ -103,7 +109,9 @@ export function Navbar({ transparentOnTop = false }: { transparentOnTop?: boolea
                 <Link key={n.to} to={n.to} className="text-2xl font-serif">{n.label}</Link>
               ))}
               {user?.role === "ADMIN" && <Link to="/admin" className="text-2xl font-serif">Admin</Link>}
-              <button onClick={logout} className="text-left text-2xl font-serif text-muted-foreground">Sair</button>
+              {user
+                ? <button onClick={() => { void logout(); }} className="text-left text-2xl font-serif text-muted-foreground">Sair</button>
+                : <Link to="/login" className="text-2xl font-serif text-muted-foreground">Entrar</Link>}
             </div>
           </motion.div>
         )}
