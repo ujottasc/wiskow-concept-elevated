@@ -10,12 +10,11 @@ import {
 } from "@tanstack/react-router";
 import { useEffect, type ReactNode } from "react";
 import markIcon from "@/assets/wiskow-mark.png.asset.json";
-import { Toaster } from "@/components/ui/sonner";
 
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
-import { StoreProvider } from "../lib/store";
+import { StoreProvider, useStore } from "../lib/store";
 
 function NotFoundComponent() {
   return (
@@ -92,13 +91,38 @@ function RootShell({ children }: { children: ReactNode }) {
   );
 }
 
+function AuthGate({ children }: { children: ReactNode }) {
+  const { user } = useStore();
+  const router = useRouter();
+  const pathname = useRouterState({ select: s => s.location.pathname });
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    // hydration: user is loaded async — allow one tick
+    const t = setTimeout(() => {
+      const stored = localStorage.getItem("wk:user");
+      const hasUser = user || (stored && stored !== "null");
+      if (!hasUser && pathname !== "/login") {
+        router.navigate({ to: "/login" });
+      }
+      if (hasUser && pathname === "/login") {
+        router.navigate({ to: "/" });
+      }
+    }, 0);
+    return () => clearTimeout(t);
+  }, [user, pathname, router]);
+
+  return <>{children}</>;
+}
+
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
   return (
     <QueryClientProvider client={queryClient}>
       <StoreProvider>
-        <Outlet />
-        <Toaster position="top-center" />
+        <AuthGate>
+          <Outlet />
+        </AuthGate>
       </StoreProvider>
     </QueryClientProvider>
   );

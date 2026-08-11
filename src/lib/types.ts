@@ -1,15 +1,12 @@
 export type Role = "ADMIN" | "USER";
 
 export interface User {
-  id: string;
   email: string;
-  name?: string;
   role: Role;
 }
 
 export interface Product {
   id: string;
-  slug?: string;
   name: string;
   price: number;
   category: string;
@@ -60,18 +57,13 @@ export interface Coupon {
   active: boolean;
 }
 
-export type OrderStatus = "Pendente" | "Pago" | "Enviado" | "Entregue" | "Cancelado";
-
 export interface Order {
   id: string;
   customer: string;
-  phone?: string;
-  email?: string;
   total: number;
-  status: OrderStatus;
+  status: "Pendente" | "Pago" | "Enviado" | "Entregue";
   date: string;
   items: number;
-  userId?: string | null;
 }
 
 export interface Customer {
