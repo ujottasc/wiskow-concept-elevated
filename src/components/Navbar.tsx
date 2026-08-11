@@ -83,8 +83,13 @@ export function Navbar({ transparentOnTop = false }: { transparentOnTop?: boolea
             </button>
             {user ? (
               <button aria-label="Sair" onClick={() => { void logout(); }} className="hidden md:inline">
-              <User className="h-4 w-4" />
-            </button>
+                <User className="h-4 w-4" />
+              </button>
+            ) : (
+              <Link to="/login" aria-label="Entrar" className="hidden md:inline">
+                <User className="h-4 w-4" />
+              </Link>
+            )}
           </div>
         </div>
       </header>
