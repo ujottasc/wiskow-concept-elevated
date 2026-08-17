@@ -4,7 +4,7 @@ import {
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import type {
-  Product, Collection, Category, Banner, CartItem, Coupon, Order, Customer, Settings, User,
+  Product, Collection, Category, Banner, CartItem, Coupon, Order, Customer, Settings, User, SiteContent,
 } from "./types";
 
 const isBrowser = typeof window !== "undefined";
@@ -26,6 +26,7 @@ export const defaultSettings: Settings = {
   instagram: "wiskow.concept",
   logo: "",
   primaryColor: "#fdb9e2",
+  instagramFeed: [],
   featuredCollectionIds: [],
   featuredProductIds: [],
 };
@@ -59,7 +60,7 @@ const toBanner = (r: DbRow): Banner => ({
 });
 
 const toOrder = (r: DbRow): Order => {
-  const items = (r["items"] as { quantity?: number }[]) ?? [];
+  const items = (r["items"] as { name?: string; size?: string; color?: string; quantity?: number; price?: number }[]) ?? [];
   return {
     id: r["id"] as string,
     customer: r["customer_name"] as string,
@@ -69,6 +70,16 @@ const toOrder = (r: DbRow): Order => {
     status: (r["status"] as Order["status"]) ?? "Pendente",
     date: new Date(r["created_at"] as string).toISOString().slice(0, 10),
     items: items.reduce((n, i) => n + (i.quantity ?? 1), 0),
+    lines: items.map(i => ({
+      name: i.name ?? "Peça",
+      size: i.size ?? "",
+      color: i.color ?? "",
+      quantity: i.quantity ?? 1,
+      price: Number(i.price ?? 0),
+    })),
+    couponCode: (r["coupon_code"] as string) ?? null,
+    subtotal: Number(r["subtotal"] ?? 0),
+    discount: Number(r["discount"] ?? 0),
     userId: (r["user_id"] as string) ?? null,
   };
 };
@@ -105,6 +116,7 @@ interface StoreCtx {
 
   categories: Category[];
   addCategory: (c: Category) => Promise<void>;
+  updateCategory: (c: Category) => Promise<void>;
   removeCategory: (id: string) => Promise<void>;
 
   banners: Banner[];
@@ -114,6 +126,7 @@ interface StoreCtx {
 
   coupons: Coupon[];
   addCoupon: (c: Coupon) => Promise<void>;
+  updateCoupon: (c: Coupon) => Promise<void>;
   removeCoupon: (id: string) => Promise<void>;
   findCoupon: (code: string) => Coupon | undefined;
 
@@ -133,8 +146,15 @@ interface StoreCtx {
   cartOpen: boolean;
   setCartOpen: (v: boolean) => void;
 
+  content: SiteContent[];
+  saveContent: (c: SiteContent) => Promise<void>;
+  removeContent: (id: string) => Promise<void>;
+
+  updateProfile: (data: { name: string; phone: string }) => Promise<{ ok: boolean; error?: string }>;
+
   settings: Settings;
   updateSettings: (s: Partial<Settings>) => void;
+  saveSettingsNow: () => Promise<void>;
   refresh: () => Promise<void>;
 }
 
@@ -154,6 +174,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
   const [cart, setCart] = useState<CartItem[]>([]);
   const [cartOpen, setCartOpen] = useState(false);
   const [settings, setSettings] = useState<Settings>(defaultSettings);
+  const [content, setContent] = useState<SiteContent[]>([]);
   const [cartHydrated, setCartHydrated] = useState(false);
   const settingsTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -168,14 +189,16 @@ export function StoreProvider({ children }: { children: ReactNode }) {
 
   // ---------- catalog ----------
   const loadCatalog = useCallback(async () => {
-    const [p, c, cat, b, cp, st] = await Promise.all([
+    const [p, c, cat, b, cp, st, ct] = await Promise.all([
       supabase.from("products").select("*").eq("active", true).order("created_at", { ascending: true }),
       supabase.from("collections").select("*").order("sort_order", { ascending: true }),
       supabase.from("categories").select("*").order("sort_order", { ascending: true }),
       supabase.from("banners").select("*").eq("active", true).order("sort_order", { ascending: true }),
       supabase.from("coupons").select("*").order("code", { ascending: true }),
       supabase.from("site_settings").select("*").maybeSingle(),
+      supabase.from("site_content").select("*").order("sort_order", { ascending: true }),
     ]);
+    if (ct.data) setContent(ct.data.map(r => ({ id: r.id, title: r.title, body: r.body, order: r.sort_order })));
     if (p.data) setProducts(p.data.map(toProduct));
     if (c.data) setCollections(c.data.map(r => ({
       id: r.id, name: r.name, description: r.description, image: r.image, featured: r.featured,
@@ -190,6 +213,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
         instagram: st.data.instagram,
         logo: st.data.logo,
         primaryColor: st.data.primary_color,
+        instagramFeed: st.data.instagram_feed ?? [],
         heroBannerId: st.data.hero_banner_id ?? undefined,
         featuredCollectionIds: st.data.featured_collection_ids ?? [],
         featuredProductIds: st.data.featured_product_ids ?? [],
@@ -369,6 +393,11 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     },
 
     categories,
+    updateCategory: async c => {
+      if (!guardAdmin()) return;
+      const { error } = await supabase.from("categories").update({ name: c.name }).eq("id", c.id);
+      await handle(error, "Categoria atualizada.");
+    },
     addCategory: async c => {
       if (!guardAdmin()) return;
       const { error } = await supabase.from("categories").insert({ id: c.id, name: c.name, sort_order: categories.length + 1 });
@@ -402,6 +431,13 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     },
 
     coupons,
+    updateCoupon: async c => {
+      if (!guardAdmin()) return;
+      const { error } = await supabase.from("coupons")
+        .update({ code: c.code.toUpperCase(), discount: c.discount, active: c.active })
+        .eq("id", c.id);
+      await handle(error, "Cupom atualizado.");
+    },
     addCoupon: async c => {
       if (!guardAdmin()) return;
       const { error } = await supabase.from("coupons").insert({ code: c.code, discount: c.discount, active: c.active });
@@ -470,6 +506,29 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     clearCart: () => setCart([]),
     cartOpen, setCartOpen,
 
+    content,
+    saveContent: async c => {
+      if (!guardAdmin()) return;
+      const { error } = await supabase.from("site_content").upsert({
+        id: c.id, title: c.title, body: c.body, sort_order: c.order, updated_at: new Date().toISOString(),
+      });
+      await handle(error, "Conteúdo salvo.");
+    },
+    removeContent: async id => {
+      if (!guardAdmin()) return;
+      const { error } = await supabase.from("site_content").delete().eq("id", id);
+      await handle(error, "Conteúdo removido.");
+    },
+
+    updateProfile: async ({ name, phone }) => {
+      if (!user) return { ok: false, error: "Sessão expirada." };
+      const { error } = await supabase.from("profiles").update({ full_name: name, phone }).eq("id", user.id);
+      if (error) return { ok: false, error: error.message };
+      await supabase.auth.updateUser({ data: { full_name: name } });
+      setUser(prev => (prev ? { ...prev, name } : prev));
+      return { ok: true };
+    },
+
     settings,
     updateSettings: s => {
       setSettings(prev => {
@@ -483,6 +542,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
               instagram: next.instagram,
               logo: next.logo,
               primary_color: next.primaryColor,
+              instagram_feed: next.instagramFeed,
               hero_banner_id: next.heroBannerId ?? null,
               featured_collection_ids: next.featuredCollectionIds,
               featured_product_ids: next.featuredProductIds,
@@ -494,10 +554,27 @@ export function StoreProvider({ children }: { children: ReactNode }) {
         return next;
       });
     },
+    saveSettingsNow: async () => {
+      if (!isAdmin) return;
+      if (settingsTimer.current) clearTimeout(settingsTimer.current);
+      const { error } = await supabase.from("site_settings").update({
+        store_name: settings.storeName,
+        whatsapp: settings.whatsapp,
+        instagram: settings.instagram,
+        logo: settings.logo,
+        primary_color: settings.primaryColor,
+        hero_banner_id: settings.heroBannerId ?? null,
+        featured_collection_ids: settings.featuredCollectionIds,
+        featured_product_ids: settings.featuredProductIds,
+        instagram_feed: settings.instagramFeed,
+      }).eq("id", true);
+      if (error) toast.error(error.message);
+      else toast.success("Configurações salvas.");
+    },
     refresh,
   }), [
     ready, user, isAdmin, products, collections, categories, banners, coupons, orders, customers,
-    favorites, cart, cartOpen, settings, refresh, syncUser, loadFavorites, loadAdminData,
+    favorites, cart, cartOpen, settings, content, refresh, syncUser, loadFavorites, loadAdminData,
   ]);
 
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>;
