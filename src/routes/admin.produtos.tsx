@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { Plus, Search, Pencil, Trash2, X } from "lucide-react";
 import { PageHeader } from "@/components/AdminLayout";
+import { ImageUploader } from "@/components/ImageUploader";
 import { useStore, formatPrice } from "@/lib/store";
 import type { Product } from "@/lib/types";
 
@@ -13,12 +14,14 @@ const empty: Product = {
   id: "",
   name: "",
   price: 0,
-  category: "vestidos",
+  category: "",
   collectionId: "",
   description: "",
-  images: [""],
+  images: [],
   sizes: ["P", "M", "G"],
   colors: ["Preto"],
+  featured: false,
+  isNew: false,
   stock: 10,
 };
 
@@ -27,19 +30,23 @@ function ProdutosAdmin() {
   const [query, setQuery] = useState("");
   const [catFilter, setCatFilter] = useState<string>("");
   const [editing, setEditing] = useState<Product | null>(null);
+  const [saving, setSaving] = useState(false);
 
   const filtered = products.filter(p =>
     (!catFilter || p.category === catFilter) &&
     (!query || p.name.toLowerCase().includes(query.toLowerCase()))
   );
 
-  const openNew = () => setEditing({ ...empty, id: `p-${Date.now()}` });
+  const openNew = () => setEditing({ ...empty, category: categories[0]?.id ?? "" });
 
-  const save = () => {
+  const save = async () => {
     if (!editing) return;
+    if (!editing.name.trim()) return;
+    setSaving(true);
     const exists = products.find(p => p.id === editing.id);
-    if (exists) updateProduct(editing);
-    else addProduct(editing);
+    if (exists) await updateProduct(editing);
+    else await addProduct(editing);
+    setSaving(false);
     setEditing(null);
   };
 
@@ -66,7 +73,7 @@ function ProdutosAdmin() {
         </select>
       </div>
 
-      <div className="bg-card border border-border overflow-hidden">
+      <div className="bg-card border border-border overflow-x-auto">
         <table className="w-full text-sm">
           <thead className="border-b border-border">
             <tr className="text-left">
@@ -80,17 +87,19 @@ function ProdutosAdmin() {
           <tbody className="divide-y divide-border">
             {filtered.map(p => (
               <tr key={p.id} className="hover:bg-secondary/40">
-                <td className="p-3 flex items-center gap-3">
-                  <img src={p.images[0]} alt="" className="w-10 h-12 object-cover" />
-                  <span>{p.name}</span>
+                <td className="p-3">
+                  <div className="flex items-center gap-3">
+                    {p.images[0] && <img src={p.images[0]} alt="" className="w-10 h-12 object-cover" />}
+                    <span>{p.name}</span>
+                  </div>
                 </td>
-                <td className="p-3 hidden md:table-cell capitalize">{p.category}</td>
+                <td className="p-3 hidden md:table-cell capitalize">{categories.find(c => c.id === p.category)?.name ?? "—"}</td>
                 <td className="p-3 hidden md:table-cell">{p.stock}</td>
                 <td className="p-3 text-right">{formatPrice(p.price)}</td>
                 <td className="p-3">
                   <div className="flex justify-end gap-2">
-                    <button onClick={() => setEditing(p)} className="p-2 hover:bg-secondary"><Pencil className="h-3.5 w-3.5" /></button>
-                    <button onClick={() => confirm(`Remover ${p.name}?`) && removeProduct(p.id)} className="p-2 hover:bg-secondary"><Trash2 className="h-3.5 w-3.5" /></button>
+                    <button onClick={() => setEditing(p)} aria-label="Editar" className="p-2 hover:bg-secondary"><Pencil className="h-3.5 w-3.5" /></button>
+                    <button onClick={() => { if (confirm(`Remover ${p.name}?`)) void removeProduct(p.id); }} aria-label="Remover" className="p-2 hover:bg-secondary"><Trash2 className="h-3.5 w-3.5" /></button>
                   </div>
                 </td>
               </tr>
@@ -107,13 +116,14 @@ function ProdutosAdmin() {
           <div className="w-full max-w-lg bg-background h-full overflow-y-auto">
             <div className="flex items-center justify-between p-6 border-b border-border">
               <h2 className="font-serif text-2xl">{products.find(p => p.id === editing.id) ? "Editar" : "Novo"} produto</h2>
-              <button onClick={() => setEditing(null)}><X className="h-5 w-5" /></button>
+              <button onClick={() => setEditing(null)} aria-label="Fechar"><X className="h-5 w-5" /></button>
             </div>
             <div className="p-6 space-y-5">
               <Field label="Nome"><input value={editing.name} onChange={e => setEditing({ ...editing, name: e.target.value })} className="input" /></Field>
-              <Field label="Preço"><input type="number" value={editing.price} onChange={e => setEditing({ ...editing, price: +e.target.value })} className="input" /></Field>
+              <Field label="Preço"><input type="number" min={0} step="0.01" value={editing.price} onChange={e => setEditing({ ...editing, price: +e.target.value })} className="input" /></Field>
               <Field label="Categoria">
                 <select value={editing.category} onChange={e => setEditing({ ...editing, category: e.target.value })} className="input">
+                  <option value="">Sem categoria</option>
                   {categories.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
                 </select>
               </Field>
@@ -124,17 +134,36 @@ function ProdutosAdmin() {
                 </select>
               </Field>
               <Field label="Descrição"><textarea rows={4} value={editing.description} onChange={e => setEditing({ ...editing, description: e.target.value })} className="input" /></Field>
-              <Field label="Imagens (URL, uma por linha)">
-                <textarea rows={3} value={editing.images.join("\n")} onChange={e => setEditing({ ...editing, images: e.target.value.split("\n").filter(Boolean) })} className="input" />
-                <p className="text-[10px] text-muted-foreground mt-2 uppercase tracking-[0.2em]">Upload mock — cole URLs de imagem</p>
-              </Field>
+
+              <ImageUploader
+                label="Imagens"
+                multiple
+                folder="produtos"
+                value={editing.images}
+                onChange={images => setEditing({ ...editing, images })}
+              />
+
               <div className="grid grid-cols-2 gap-4">
                 <Field label="Tamanhos (vírgula)"><input value={editing.sizes.join(", ")} onChange={e => setEditing({ ...editing, sizes: e.target.value.split(",").map(s => s.trim()).filter(Boolean) })} className="input" /></Field>
                 <Field label="Cores (vírgula)"><input value={editing.colors.join(", ")} onChange={e => setEditing({ ...editing, colors: e.target.value.split(",").map(s => s.trim()).filter(Boolean) })} className="input" /></Field>
               </div>
-              <Field label="Estoque"><input type="number" value={editing.stock} onChange={e => setEditing({ ...editing, stock: +e.target.value })} className="input" /></Field>
+              <Field label="Estoque"><input type="number" min={0} value={editing.stock} onChange={e => setEditing({ ...editing, stock: +e.target.value })} className="input" /></Field>
+
+              <div className="flex gap-6">
+                <label className="inline-flex items-center gap-2 text-sm">
+                  <input type="checkbox" checked={!!editing.featured} onChange={e => setEditing({ ...editing, featured: e.target.checked })} />
+                  Destaque
+                </label>
+                <label className="inline-flex items-center gap-2 text-sm">
+                  <input type="checkbox" checked={!!editing.isNew} onChange={e => setEditing({ ...editing, isNew: e.target.checked })} />
+                  Novidade
+                </label>
+              </div>
+
               <div className="flex gap-2 pt-4 border-t border-border">
-                <button onClick={save} className="flex-1 bg-foreground text-background py-3 text-xs uppercase tracking-[0.22em]">Salvar</button>
+                <button disabled={saving || !editing.name.trim()} onClick={() => void save()} className="flex-1 bg-foreground text-background py-3 text-xs uppercase tracking-[0.22em] disabled:opacity-50">
+                  {saving ? "Salvando…" : "Salvar"}
+                </button>
                 <button onClick={() => setEditing(null)} className="px-6 py-3 text-xs uppercase tracking-[0.22em] border border-border">Cancelar</button>
               </div>
             </div>
