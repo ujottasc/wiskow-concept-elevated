@@ -71,6 +71,10 @@ export interface Order {
   status: OrderStatus;
   date: string;
   items: number;
+  lines?: { name: string; size: string; color: string; quantity: number; price: number }[];
+  couponCode?: string | null;
+  subtotal?: number;
+  discount?: number;
   userId?: string | null;
 }
 
@@ -89,7 +93,15 @@ export interface Settings {
   instagram: string;
   logo: string;
   primaryColor: string;
+  instagramFeed: string[];
   heroBannerId?: string;
   featuredCollectionIds: string[];
   featuredProductIds: string[];
+}
+
+export interface SiteContent {
+  id: string;
+  title: string;
+  body: string;
+  order: number;
 }

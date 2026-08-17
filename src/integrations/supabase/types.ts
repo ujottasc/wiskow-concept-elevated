@@ -277,6 +277,30 @@ export type Database = {
         }
         Relationships: []
       }
+      site_content: {
+        Row: {
+          body: string
+          id: string
+          sort_order: number
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          body?: string
+          id: string
+          sort_order?: number
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          body?: string
+          id?: string
+          sort_order?: number
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       site_settings: {
         Row: {
           featured_collection_ids: string[]
@@ -284,6 +308,7 @@ export type Database = {
           hero_banner_id: string | null
           id: boolean
           instagram: string
+          instagram_feed: string[]
           logo: string
           primary_color: string
           store_name: string
@@ -295,6 +320,7 @@ export type Database = {
           hero_banner_id?: string | null
           id?: boolean
           instagram?: string
+          instagram_feed?: string[]
           logo?: string
           primary_color?: string
           store_name?: string
@@ -306,6 +332,7 @@ export type Database = {
           hero_banner_id?: string | null
           id?: boolean
           instagram?: string
+          instagram_feed?: string[]
           logo?: string
           primary_color?: string
           store_name?: string
