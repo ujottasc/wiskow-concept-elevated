@@ -7,6 +7,14 @@ export interface User {
   role: Role;
 }
 
+export interface ProductVariant {
+  id: string;
+  name: string;
+  hex: string;
+  images: string[];
+  primaryImage?: string;
+}
+
 export interface Product {
   id: string;
   slug?: string;
