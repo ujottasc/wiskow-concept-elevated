@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
-import { Plus, Search, Pencil, Trash2, X } from "lucide-react";
-import { PageHeader } from "@/components/AdminLayout";
+import { Plus, Search, Pencil, Trash2 } from "lucide-react";
+import { PageHeader, AdminDrawer } from "@/components/AdminLayout";
 import { ImageUploader } from "@/components/ImageUploader";
 import { useStore, formatPrice } from "@/lib/store";
 import type { Product } from "@/lib/types";
@@ -62,18 +62,18 @@ function ProdutosAdmin() {
         }
       />
 
-      <div className="flex flex-wrap gap-4 items-center mb-6">
-        <div className="flex items-center border-b border-border flex-1 min-w-64">
+      <div className="flex flex-col sm:flex-row sm:flex-wrap gap-3 sm:gap-4 sm:items-center mb-6">
+        <div className="flex items-center border-b border-border flex-1 min-w-0 sm:min-w-64">
           <Search className="h-4 w-4 text-muted-foreground" />
           <input value={query} onChange={e => setQuery(e.target.value)} placeholder="Pesquisar..." className="bg-transparent px-3 py-2 text-sm outline-none flex-1" />
         </div>
-        <select value={catFilter} onChange={e => setCatFilter(e.target.value)} className="bg-transparent border border-border px-3 py-2 text-sm">
+        <select value={catFilter} onChange={e => setCatFilter(e.target.value)} className="w-full sm:w-auto bg-transparent border border-border px-3 py-2 text-sm">
           <option value="">Todas as categorias</option>
           {categories.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
         </select>
       </div>
 
-      <div className="bg-card border border-border overflow-x-auto">
+      <div className="hidden md:block bg-card border border-border overflow-x-auto">
         <table className="w-full text-sm">
           <thead className="border-b border-border">
             <tr className="text-left">
@@ -111,14 +111,31 @@ function ProdutosAdmin() {
         </table>
       </div>
 
-      {editing && (
-        <div className="fixed inset-0 z-50 bg-black/50 flex justify-end">
-          <div className="w-full max-w-lg bg-background h-full overflow-y-auto">
-            <div className="flex items-center justify-between p-6 border-b border-border">
-              <h2 className="font-serif text-2xl">{products.find(p => p.id === editing.id) ? "Editar" : "Novo"} produto</h2>
-              <button onClick={() => setEditing(null)} aria-label="Fechar"><X className="h-5 w-5" /></button>
+
+      {/* Lista em cards no mobile */}
+      <div className="md:hidden space-y-3">
+        {filtered.map(p => (
+          <div key={p.id} className="bg-card border border-border p-3">
+            <div className="flex gap-3">
+              {p.images[0] && <img src={p.images[0]} alt="" className="w-16 h-20 shrink-0 object-cover" />}
+              <div className="min-w-0 flex-1">
+                <p className="font-medium break-words">{p.name}</p>
+                <p className="text-xs text-muted-foreground mt-1 capitalize">{categories.find(c => c.id === p.category)?.name ?? "Sem categoria"}</p>
+                <p className="text-sm mt-1">{formatPrice(p.price)} · <span className="text-muted-foreground text-xs">{p.stock} em estoque</span></p>
+              </div>
             </div>
-            <div className="p-6 space-y-5">
+            <div className="mt-3 flex gap-2">
+              <button onClick={() => setEditing(p)} className="flex-1 border border-border min-h-11 text-[10px] uppercase tracking-[0.22em] inline-flex items-center justify-center gap-2"><Pencil className="h-4 w-4" /> Editar</button>
+              <button onClick={() => { if (confirm(`Remover ${p.name}?`)) void removeProduct(p.id); }} aria-label="Remover" className="border border-border w-11 min-h-11 flex items-center justify-center"><Trash2 className="h-4 w-4" /></button>
+            </div>
+          </div>
+        ))}
+        {filtered.length === 0 && <p className="text-sm text-muted-foreground">Nenhum produto encontrado.</p>}
+      </div>
+
+      {editing && (
+        <AdminDrawer title={`${products.find(p => p.id === editing.id) ? "Editar" : "Novo"} produto`} onClose={() => setEditing(null)}>
+
               <Field label="Nome"><input value={editing.name} onChange={e => setEditing({ ...editing, name: e.target.value })} className="input" /></Field>
               <Field label="Preço"><input type="number" min={0} step="0.01" value={editing.price} onChange={e => setEditing({ ...editing, price: +e.target.value })} className="input" /></Field>
               <Field label="Categoria">
@@ -143,7 +160,7 @@ function ProdutosAdmin() {
                 onChange={images => setEditing({ ...editing, images })}
               />
 
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <Field label="Tamanhos (vírgula)"><input value={editing.sizes.join(", ")} onChange={e => setEditing({ ...editing, sizes: e.target.value.split(",").map(s => s.trim()).filter(Boolean) })} className="input" /></Field>
                 <Field label="Cores (vírgula)"><input value={editing.colors.join(", ")} onChange={e => setEditing({ ...editing, colors: e.target.value.split(",").map(s => s.trim()).filter(Boolean) })} className="input" /></Field>
               </div>
@@ -160,15 +177,13 @@ function ProdutosAdmin() {
                 </label>
               </div>
 
-              <div className="flex gap-2 pt-4 border-t border-border">
+              <div className="flex flex-col sm:flex-row gap-2 pt-4 border-t border-border">
                 <button disabled={saving || !editing.name.trim()} onClick={() => void save()} className="flex-1 bg-foreground text-background py-3 text-xs uppercase tracking-[0.22em] disabled:opacity-50">
                   {saving ? "Salvando…" : "Salvar"}
                 </button>
                 <button onClick={() => setEditing(null)} className="px-6 py-3 text-xs uppercase tracking-[0.22em] border border-border">Cancelar</button>
               </div>
-            </div>
-          </div>
-        </div>
+        </AdminDrawer>
       )}
 
       <style>{`.input{width:100%;background:transparent;border:1px solid var(--border);padding:.6rem .8rem;font-size:.875rem;outline:none}.input:focus{border-color:var(--foreground)}`}</style>
