@@ -44,6 +44,7 @@ const toProduct = (r: DbRow): Product => ({
   images: (r["images"] as string[]) ?? [],
   sizes: (r["sizes"] as string[]) ?? [],
   colors: (r["colors"] as string[]) ?? [],
+  variants: Array.isArray(r["variants"]) ? (r["variants"] as Product["variants"]) : [],
   featured: Boolean(r["featured"]),
   isNew: Boolean(r["is_new"]),
   stock: Number(r["stock"] ?? 0),
