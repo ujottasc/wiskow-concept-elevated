@@ -1,5 +1,6 @@
 import { X, Plus, Minus, Trash2 } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
+import { coverImages } from "@/lib/product-variants";
 import { useStore, formatPrice } from "@/lib/store";
 
 export function CartDrawer() {
@@ -45,7 +46,7 @@ export function CartDrawer() {
                 <ul className="divide-y divide-border">
                   {items.map(item => (
                     <li key={item.idx} className="p-6 flex gap-4">
-                      <img src={item.product!.images[0]} alt="" className="w-24 h-32 object-cover" />
+                      <img src={coverImages(item.product!)[0]} alt="" className="w-24 h-32 object-cover" />
                       <div className="flex-1 flex flex-col">
                         <div className="flex justify-between gap-2">
                           <div>

@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Heart, ShoppingBag, X } from "lucide-react";
 import { SiteLayout } from "@/components/SiteLayout";
+import { coverImages } from "@/lib/product-variants";
 import { useStore, formatPrice } from "@/lib/store";
 
 export const Route = createFileRoute("/favoritos")({
@@ -39,7 +40,7 @@ function Favoritos() {
               <div key={p.id} className="group relative">
                 <Link to="/produto/$id" params={{ id: p.id }} className="block">
                   <div className="aspect-[3/4] overflow-hidden bg-muted">
-                    <img src={p.images[0]} alt={p.name} className="h-full w-full object-cover transition-transform duration-[1200ms] group-hover:scale-105" />
+                    <img src={coverImages(p)[0]} alt={p.name} className="h-full w-full object-cover transition-transform duration-[1200ms] group-hover:scale-105" />
                   </div>
                   <div className="mt-4 flex justify-between items-start">
                     <div>

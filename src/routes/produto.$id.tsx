@@ -91,7 +91,7 @@ function ProdutoPage() {
 
           <p className="mt-8 text-sm leading-relaxed text-muted-foreground">{product.description}</p>
 
-          <div className="mt-10">
+          <div className={`mt-10 ${variants.length ? "" : "hidden"}`}>
             <p className="eyebrow text-muted-foreground">Cor · {color}</p>
             <div className="mt-3 flex gap-3 flex-wrap">
               {variants.map(v => (
