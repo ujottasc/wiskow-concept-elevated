@@ -49,12 +49,12 @@ function Dashboard() {
           </div>
           <div className="mt-6 divide-y divide-border">
             {orders.map(o => (
-              <div key={o.id} className="py-3 flex items-center justify-between text-sm">
-                <div>
-                  <p className="font-medium">{o.customer}</p>
+              <div key={o.id} className="py-3 flex items-center justify-between gap-3 text-sm">
+                <div className="min-w-0">
+                  <p className="font-medium truncate">{o.customer}</p>
                   <p className="text-xs text-muted-foreground">{o.date} · {o.items} item(s)</p>
                 </div>
-                <div className="text-right">
+                <div className="text-right shrink-0">
                   <p>{formatPrice(o.total)}</p>
                   <span className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground">{o.status}</span>
                 </div>
@@ -68,7 +68,7 @@ function Dashboard() {
           <div className="mt-6 space-y-4">
             {products.slice(0, 4).map(p => (
               <div key={p.id} className="flex items-center gap-3">
-                <img src={p.images[0]} alt="" className="w-12 h-14 object-cover" />
+                <img src={p.images[0]} alt="" className="w-12 h-14 shrink-0 object-cover" />
                 <div className="flex-1 min-w-0">
                   <p className="text-sm truncate">{p.name}</p>
                   <p className="text-xs text-muted-foreground">{formatPrice(p.price)}</p>

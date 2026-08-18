@@ -22,7 +22,7 @@ function ConfigAdmin() {
   return (
     <div>
       <PageHeader title="Configurações" subtitle="Loja" />
-      <div className="max-w-2xl bg-card border border-border p-6 space-y-5">
+      <div className="max-w-2xl bg-card border border-border p-4 sm:p-6 space-y-5">
         {FIELDS.map(([label, key]) => (
           <div key={key}>
             <label className="block text-[10px] uppercase tracking-[0.22em] text-muted-foreground mb-2">{label}</label>
@@ -50,7 +50,7 @@ function ConfigAdmin() {
         </div>
 
         <button onClick={async () => { setSaving(true); await saveSettingsNow(); setSaving(false); }} disabled={saving}
-          className="bg-foreground text-background px-6 py-3 text-xs uppercase tracking-[0.22em] disabled:opacity-50">
+          className="w-full sm:w-auto bg-foreground text-background px-6 py-3 text-xs uppercase tracking-[0.22em] disabled:opacity-50">
           {saving ? "Salvando..." : "Salvar configurações"}
         </button>
         <p className="text-xs text-muted-foreground">As alterações também salvam automaticamente.</p>

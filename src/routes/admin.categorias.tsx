@@ -27,31 +27,31 @@ function CategoriasAdmin() {
     <div>
       <PageHeader title="Categorias" subtitle="Organização" />
       <div className="max-w-xl bg-card border border-border p-6">
-        <form onSubmit={create} className="flex gap-2 mb-6">
+        <form onSubmit={create} className="flex flex-col sm:flex-row gap-2 mb-6">
           <input value={name} onChange={e => setName(e.target.value)} placeholder="Nova categoria" className="flex-1 border border-border px-3 py-2 text-sm bg-transparent" />
-          <button className="bg-foreground text-background px-5 text-xs uppercase tracking-[0.22em] inline-flex items-center gap-2"><Plus className="h-4 w-4" /> Adicionar</button>
+          <button className="bg-foreground text-background px-5 min-h-11 text-xs uppercase tracking-[0.22em] inline-flex items-center justify-center gap-2"><Plus className="h-4 w-4" /> Adicionar</button>
         </form>
         <ul className="divide-y divide-border">
           {categories.map(c => {
             const count = products.filter(p => p.category === c.id).length;
             const editing = editingId === c.id;
             return (
-              <li key={c.id} className="py-3 flex justify-between items-center gap-3">
+              <li key={c.id} className="py-3 flex flex-wrap justify-between items-center gap-3">
                 {editing ? (
                   <input autoFocus value={editName} onChange={e => setEditName(e.target.value)} className="flex-1 border border-border px-2 py-1 text-sm bg-transparent" />
                 ) : (
-                  <span className="text-sm">{c.name} <span className="text-xs text-muted-foreground">· {count} peça(s)</span></span>
+                  <span className="text-sm min-w-0 break-words">{c.name} <span className="text-xs text-muted-foreground">· {count} peça(s)</span></span>
                 )}
                 <div className="flex items-center gap-2">
                   {editing ? (
                     <>
-                      <button aria-label="Salvar" onClick={async () => { if (editName.trim()) await updateCategory({ id: c.id, name: editName.trim() }); setEditingId(null); }}><Check className="h-4 w-4" /></button>
-                      <button aria-label="Cancelar" onClick={() => setEditingId(null)}><X className="h-4 w-4 text-muted-foreground" /></button>
+                      <button aria-label="Salvar" className="inline-flex h-11 w-11 items-center justify-center" onClick={async () => { if (editName.trim()) await updateCategory({ id: c.id, name: editName.trim() }); setEditingId(null); }}><Check className="h-5 w-5" /></button>
+                      <button aria-label="Cancelar" className="inline-flex h-11 w-11 items-center justify-center" onClick={() => setEditingId(null)}><X className="h-5 w-5 text-muted-foreground" /></button>
                     </>
                   ) : (
                     <>
-                      <button aria-label="Editar" onClick={() => { setEditingId(c.id); setEditName(c.name); }}><Pencil className="h-3.5 w-3.5 text-muted-foreground hover:text-foreground" /></button>
-                      <button aria-label="Remover" onClick={() => { if (confirm(`Remover ${c.name}?`)) void removeCategory(c.id); }}><Trash2 className="h-3.5 w-3.5 text-muted-foreground hover:text-foreground" /></button>
+                      <button aria-label="Editar" className="inline-flex h-11 w-11 items-center justify-center" onClick={() => { setEditingId(c.id); setEditName(c.name); }}><Pencil className="h-4 w-4 text-muted-foreground hover:text-foreground" /></button>
+                      <button aria-label="Remover" className="inline-flex h-11 w-11 items-center justify-center" onClick={() => { if (confirm(`Remover ${c.name}?`)) void removeCategory(c.id); }}><Trash2 className="h-4 w-4 text-muted-foreground hover:text-foreground" /></button>
                     </>
                   )}
                 </div>

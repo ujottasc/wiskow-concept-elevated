@@ -121,7 +121,38 @@ export function PageHeader({ title, subtitle, action }: { title: string; subtitl
         <p className="eyebrow text-muted-foreground">{subtitle ?? "Admin"}</p>
         <h1 className="font-serif text-3xl sm:text-4xl md:text-5xl mt-2 break-words">{title}</h1>
       </div>
-      {action && <div className="shrink-0">{action}</div>}
+      {action && (
+        <div className="w-full sm:w-auto sm:shrink-0 [&>button]:w-full [&>input]:w-full sm:[&>button]:w-auto sm:[&>input]:w-auto [&>button]:justify-center">
+          {action}
+        </div>
+      )}
+    </div>
+  );
+}
+
+/** Painel lateral responsivo usado nas telas do admin. */
+export function AdminDrawer({ title, onClose, children, wide }: {
+  title: string; onClose: () => void; children: React.ReactNode; wide?: boolean;
+}) {
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
+    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
+    window.addEventListener("keydown", onKey);
+    return () => { document.body.style.overflow = ""; window.removeEventListener("keydown", onKey); };
+  }, [onClose]);
+
+  return (
+    <div className="fixed inset-0 z-50 flex justify-end">
+      <button aria-label="Fechar" onClick={onClose} className="absolute inset-0 bg-black/50" />
+      <div className={`relative w-full ${wide ? "sm:max-w-2xl" : "sm:max-w-lg"} bg-background h-full overflow-y-auto overscroll-contain flex flex-col`}>
+        <div className="sticky top-0 z-10 bg-background flex items-center justify-between gap-3 p-4 sm:p-6 border-b border-border">
+          <h2 className="font-serif text-xl sm:text-2xl truncate">{title}</h2>
+          <button onClick={onClose} aria-label="Fechar" className="shrink-0 inline-flex h-11 w-11 items-center justify-center -mr-2">
+            <X className="h-5 w-5" />
+          </button>
+        </div>
+        <div className="p-4 sm:p-6 space-y-5 pb-24">{children}</div>
+      </div>
     </div>
   );
 }
