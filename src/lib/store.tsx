@@ -352,7 +352,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
         slug: p.slug || `${p.name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "")}-${Date.now().toString(36)}`,
         name: p.name, price: p.price, category_id: p.category || null, collection_id: p.collectionId || null,
         description: p.description, images: p.images, sizes: p.sizes, colors: p.colors,
-        variants: p.variants ?? [],
+        variants: JSON.parse(JSON.stringify(p.variants ?? [])),
         featured: !!p.featured, is_new: !!p.isNew, stock: p.stock,
       });
       await handle(error, "Produto criado.");
@@ -362,7 +362,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
       const { error } = await supabase.from("products").update({
         name: p.name, price: p.price, category_id: p.category || null, collection_id: p.collectionId || null,
         description: p.description, images: p.images, sizes: p.sizes, colors: p.colors,
-        variants: p.variants ?? [],
+        variants: JSON.parse(JSON.stringify(p.variants ?? [])),
         featured: !!p.featured, is_new: !!p.isNew, stock: p.stock,
       }).eq("id", p.id);
       await handle(error, "Produto atualizado.");
