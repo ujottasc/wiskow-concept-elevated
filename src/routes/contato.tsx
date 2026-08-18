@@ -19,6 +19,7 @@ export const Route = createFileRoute("/contato")({
 function Contato() {
   const { settings } = useStore();
   const [sent, setSent] = useState(false);
+  const [form, setForm] = useState({ nome: "", email: "", telefone: "", mensagem: "" });
 
   return (
     <SiteLayout>
