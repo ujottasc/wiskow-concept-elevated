@@ -201,6 +201,7 @@ export type Database = {
           sizes: string[]
           slug: string
           stock: number
+          variants: Json
         }
         Insert: {
           active?: boolean
@@ -218,6 +219,7 @@ export type Database = {
           sizes?: string[]
           slug: string
           stock?: number
+          variants?: Json
         }
         Update: {
           active?: boolean
@@ -235,6 +237,7 @@ export type Database = {
           sizes?: string[]
           slug?: string
           stock?: number
+          variants?: Json
         }
         Relationships: [
           {
