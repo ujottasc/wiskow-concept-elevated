@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
-import { Plus, Pencil, Trash2, X, Star } from "lucide-react";
-import { PageHeader } from "@/components/AdminLayout";
+import { Plus, Pencil, Trash2, Star } from "lucide-react";
+import { PageHeader, AdminDrawer } from "@/components/AdminLayout";
 import { ImageUploader } from "@/components/ImageUploader";
 import { useStore } from "@/lib/store";
 import type { Collection } from "@/lib/types";
