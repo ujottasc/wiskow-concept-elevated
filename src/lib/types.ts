@@ -13,6 +13,8 @@ export interface ProductVariant {
   hex: string;
   images: string[];
   primaryImage?: string;
+  /** true quando o admin escolheu o hex manualmente (evita sobrescrever ao renomear). */
+  touchedHex?: boolean;
 }
 
 export interface Product {
