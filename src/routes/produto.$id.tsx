@@ -1,10 +1,11 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import { Heart, MessageCircle, ShoppingBag, ChevronRight } from "lucide-react";
 import { SiteLayout } from "@/components/SiteLayout";
 import { ProductCard } from "@/components/ProductCard";
 import { useStore, formatPrice } from "@/lib/store";
+import { normalizeVariants, variantGallery } from "@/lib/product-variants";
 
 export const Route = createFileRoute("/produto/$id")({
   head: () => ({
@@ -32,9 +33,14 @@ function ProdutoPage() {
   const product = products.find(p => p.id === id);
   if (!product) throw notFound();
 
+  const variants = useMemo(() => normalizeVariants(product), [product]);
   const [size, setSize] = useState(product.sizes[0]);
-  const [color, setColor] = useState(product.colors[0]);
+  const [variantId, setVariantId] = useState(variants[0]?.id);
   const [activeImg, setActiveImg] = useState(0);
+  const activeVariant = variants.find(v => v.id === variantId) ?? variants[0];
+  const color = activeVariant?.name ?? product.colors[0] ?? "";
+  const gallery = variantGallery(product, activeVariant);
+  const selectVariant = (id: string) => { setVariantId(id); setActiveImg(0); };
   const isFav = favorites.includes(product.id);
   const related = products.filter(p => p.id !== product.id && p.category === product.category).slice(0, 4);
 
@@ -61,18 +67,18 @@ function ProdutoPage() {
         {/* Gallery */}
         <div className="flex gap-4">
           <div className="hidden md:flex flex-col gap-3">
-            {product.images.map((img, i) => (
+            {gallery.map((img, i) => (
               <button key={i} onClick={() => setActiveImg(i)} className={`w-20 h-24 overflow-hidden border ${i === activeImg ? "border-foreground" : "border-transparent"}`}>
                 <img src={img} alt="" className="h-full w-full object-cover" />
               </button>
             ))}
           </div>
           <motion.div
-            key={activeImg}
+            key={`${variantId ?? ""}-${activeImg}`}
             initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}
             className="flex-1 aspect-[3/4] overflow-hidden bg-muted"
           >
-            <img src={product.images[activeImg]} alt={product.name} className="h-full w-full object-cover hover:scale-110 transition-transform duration-[2000ms]" />
+            <img src={gallery[activeImg] ?? gallery[0]} alt={product.name} className="h-full w-full object-cover hover:scale-110 transition-transform duration-[2000ms]" />
           </motion.div>
         </div>
 
@@ -87,11 +93,20 @@ function ProdutoPage() {
 
           <div className="mt-10">
             <p className="eyebrow text-muted-foreground">Cor · {color}</p>
-            <div className="mt-3 flex gap-2 flex-wrap">
-              {product.colors.map(c => (
-                <button key={c} onClick={() => setColor(c)}
-                  className={`px-4 py-2 text-xs border ${color === c ? "border-foreground bg-foreground text-background" : "border-border"}`}>
-                  {c}
+            <div className="mt-3 flex gap-3 flex-wrap">
+              {variants.map(v => (
+                <button
+                  key={v.id}
+                  onClick={() => selectVariant(v.id)}
+                  aria-pressed={activeVariant?.id === v.id}
+                  title={v.name}
+                  className={`inline-flex items-center gap-2 pl-1.5 pr-3 py-1.5 text-xs border transition-colors ${activeVariant?.id === v.id ? "border-foreground" : "border-border hover:border-foreground/50"}`}
+                >
+                  <span
+                    className={`h-6 w-6 rounded-full border ${activeVariant?.id === v.id ? "border-foreground ring-1 ring-foreground ring-offset-2 ring-offset-background" : "border-border"}`}
+                    style={{ backgroundColor: v.hex }}
+                  />
+                  <span>{v.name}</span>
                 </button>
               ))}
             </div>
