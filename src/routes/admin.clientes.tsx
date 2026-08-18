@@ -19,13 +19,13 @@ function ClientesAdmin() {
   return (
     <div>
       <PageHeader title="Clientes" subtitle="Base" action={
-        <input value={query} onChange={e => setQuery(e.target.value)} placeholder="Buscar cliente" className="border border-border px-3 py-2 text-sm bg-transparent" />
+        <input value={query} onChange={e => setQuery(e.target.value)} placeholder="Buscar cliente" className="w-full sm:w-64 border border-border px-3 py-2 text-sm bg-transparent" />
       } />
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         {list.map(c => (
           <div key={c.id} className="bg-card border border-border p-6">
             <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-full bg-secondary flex items-center justify-center font-serif text-lg">
+              <div className="w-12 h-12 shrink-0 rounded-full bg-secondary flex items-center justify-center font-serif text-lg">
                 {c.name.charAt(0).toUpperCase()}
               </div>
               <div className="min-w-0">
@@ -38,10 +38,10 @@ function ClientesAdmin() {
               <div><p className="text-xs text-muted-foreground">Gasto</p><p>{formatPrice(c.spent)}</p></div>
             </div>
             <div className="mt-4 flex gap-2">
-              <a href={`mailto:${c.email}`} className="flex-1 border border-border py-2 text-[10px] uppercase tracking-[0.22em] inline-flex items-center justify-center gap-1"><Mail className="h-3 w-3" /> E-mail</a>
+              <a href={`mailto:${c.email}`} className="flex-1 border border-border min-h-11 text-[10px] uppercase tracking-[0.22em] inline-flex items-center justify-center gap-2"><Mail className="h-4 w-4" /> E-mail</a>
               {c.phone && (
                 <a href={`https://wa.me/${c.phone.replace(/\D/g, "")}`} target="_blank" rel="noreferrer"
-                  className="flex-1 border border-border py-2 text-[10px] uppercase tracking-[0.22em] inline-flex items-center justify-center gap-1"><MessageCircle className="h-3 w-3" /> WhatsApp</a>
+                  className="flex-1 border border-border min-h-11 text-[10px] uppercase tracking-[0.22em] inline-flex items-center justify-center gap-2"><MessageCircle className="h-4 w-4" /> WhatsApp</a>
               )}
             </div>
           </div>

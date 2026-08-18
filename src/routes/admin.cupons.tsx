@@ -25,14 +25,14 @@ function CuponsAdmin() {
     <div>
       <PageHeader title="Cupons" subtitle="Promoções" />
       <div className="max-w-2xl bg-card border border-border p-6">
-        <form onSubmit={create} className="flex gap-2 mb-6">
-          <input value={code} onChange={e => setCode(e.target.value.toUpperCase())} placeholder="CÓDIGO" className="flex-1 border border-border px-3 py-2 text-sm bg-transparent uppercase" />
-          <input type="number" min={1} max={100} value={discount} onChange={e => setDiscount(+e.target.value)} className="w-24 border border-border px-3 py-2 text-sm bg-transparent" />
-          <button className="bg-foreground text-background px-5 text-xs uppercase tracking-[0.22em] inline-flex items-center gap-2"><Plus className="h-4 w-4" /> Criar</button>
+        <form onSubmit={create} className="grid grid-cols-[minmax(0,1fr)_5.5rem] sm:flex gap-2 mb-6">
+          <input value={code} onChange={e => setCode(e.target.value.toUpperCase())} placeholder="CÓDIGO" className="min-w-0 sm:flex-1 border border-border px-3 py-2 text-sm bg-transparent uppercase" />
+          <input type="number" min={1} max={100} value={discount} onChange={e => setDiscount(+e.target.value)} className="w-full sm:w-24 border border-border px-3 py-2 text-sm bg-transparent" />
+          <button className="col-span-2 sm:col-auto bg-foreground text-background px-5 min-h-11 text-xs uppercase tracking-[0.22em] inline-flex items-center justify-center gap-2"><Plus className="h-4 w-4" /> Criar</button>
         </form>
         <ul className="divide-y divide-border">
           {coupons.map(c => (
-            <li key={c.id} className="py-3 flex items-center justify-between gap-4">
+            <li key={c.id} className="py-3 flex flex-wrap items-center justify-between gap-3">
               <div>
                 <p className="font-mono">{c.code}</p>
                 <p className="text-xs text-muted-foreground">{c.discount}% de desconto</p>
@@ -42,7 +42,7 @@ function CuponsAdmin() {
                   <input type="checkbox" checked={c.active} onChange={e => void updateCoupon({ ...c, active: e.target.checked })} />
                   {c.active ? "Ativo" : "Inativo"}
                 </label>
-                <button aria-label="Remover" onClick={() => { if (confirm(`Remover ${c.code}?`)) void removeCoupon(c.id); }}><Trash2 className="h-3.5 w-3.5 text-muted-foreground hover:text-foreground" /></button>
+                <button aria-label="Remover" className="inline-flex h-11 w-11 items-center justify-center" onClick={() => { if (confirm(`Remover ${c.code}?`)) void removeCoupon(c.id); }}><Trash2 className="h-4 w-4 text-muted-foreground hover:text-foreground" /></button>
               </div>
             </li>
           ))}

@@ -25,13 +25,13 @@ function PerfilAdmin() {
   return (
     <div>
       <PageHeader title="Perfil" subtitle="Conta" />
-      <div className="max-w-xl bg-card border border-border p-8 space-y-6">
+      <div className="max-w-xl bg-card border border-border p-5 sm:p-8 space-y-6">
         <div className="flex items-center gap-4">
-          <div className="w-16 h-16 rounded-full bg-secondary flex items-center justify-center font-serif text-2xl">
+          <div className="w-16 h-16 shrink-0 rounded-full bg-secondary flex items-center justify-center font-serif text-2xl">
             {user?.email.charAt(0).toUpperCase()}
           </div>
-          <div>
-            <p className="font-serif text-xl">{user?.email}</p>
+          <div className="min-w-0">
+            <p className="font-serif text-lg sm:text-xl break-all">{user?.email}</p>
             <p className="text-xs text-muted-foreground uppercase tracking-[0.22em]">Acesso · {user?.role === "ADMIN" ? "Administradora" : "Cliente"}</p>
           </div>
         </div>
@@ -45,12 +45,12 @@ function PerfilAdmin() {
             <label className="block text-[10px] uppercase tracking-[0.22em] text-muted-foreground mb-2">Telefone</label>
             <input value={phone} onChange={e => setPhone(e.target.value)} placeholder="51999999999" className="w-full border border-border px-3 py-2 text-sm bg-transparent" />
           </div>
-          <button onClick={save} disabled={saving} className="bg-foreground text-background px-6 py-3 text-xs uppercase tracking-[0.22em] disabled:opacity-50">
+          <button onClick={save} disabled={saving} className="w-full sm:w-auto bg-foreground text-background px-6 py-3 text-xs uppercase tracking-[0.22em] disabled:opacity-50">
             {saving ? "Salvando..." : "Salvar perfil"}
           </button>
         </div>
 
-        <button onClick={logout} className="border border-foreground px-6 py-3 text-xs uppercase tracking-[0.22em] hover:bg-foreground hover:text-background transition-colors">
+        <button onClick={logout} className="w-full sm:w-auto border border-foreground px-6 py-3 text-xs uppercase tracking-[0.22em] hover:bg-foreground hover:text-background transition-colors">
           Encerrar sessão
         </button>
       </div>
