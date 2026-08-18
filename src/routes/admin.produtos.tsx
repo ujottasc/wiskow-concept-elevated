@@ -179,7 +179,9 @@ function ProdutosAdmin() {
                 onChange={variants => setEditing({ ...editing, variants })}
               />
 
-              <Field label="Tamanhos (vírgula)"><input value={editing.sizes.join(", ")} onChange={e => setEditing({ ...editing, sizes: e.target.value.split(",").map(s => s.trim()).filter(Boolean) })} className="input" /></Field>
+              <Field label="Tamanhos disponíveis">
+                <SizesPicker value={editing.sizes} onChange={sizes => setEditing({ ...editing, sizes })} />
+              </Field>
               <Field label="Estoque"><input type="number" min={0} value={editing.stock} onChange={e => setEditing({ ...editing, stock: +e.target.value })} className="input" /></Field>
 
               <div className="flex gap-6">
@@ -203,6 +205,56 @@ function ProdutosAdmin() {
       )}
 
       <style>{`.input{width:100%;background:transparent;border:1px solid var(--border);padding:.6rem .8rem;font-size:.875rem;outline:none}.input:focus{border-color:var(--foreground)}`}</style>
+    </div>
+  );
+}
+
+const PRESET_SIZES = ["PP", "P", "M", "G", "GG", "XG", "Tam único"];
+
+function SizesPicker({ value, onChange }: { value: string[]; onChange: (v: string[]) => void }) {
+  const [custom, setCustom] = useState("");
+  const toggle = (s: string) => {
+    const has = value.some(v => v.toLowerCase() === s.toLowerCase());
+    onChange(has ? value.filter(v => v.toLowerCase() !== s.toLowerCase()) : [...value, s]);
+  };
+  const addCustom = () => {
+    const s = custom.trim();
+    if (!s) return;
+    if (!value.some(v => v.toLowerCase() === s.toLowerCase())) onChange([...value, s]);
+    setCustom("");
+  };
+  const extras = value.filter(v => !PRESET_SIZES.some(p => p.toLowerCase() === v.toLowerCase()));
+  return (
+    <div>
+      <div className="flex flex-wrap gap-2">
+        {[...PRESET_SIZES, ...extras].map(s => {
+          const active = value.some(v => v.toLowerCase() === s.toLowerCase());
+          return (
+            <button
+              key={s}
+              type="button"
+              onClick={() => toggle(s)}
+              aria-pressed={active}
+              className={`min-h-11 px-4 text-xs uppercase tracking-[0.18em] border ${active ? "border-foreground bg-foreground text-background" : "border-border hover:border-foreground/50"}`}
+            >
+              {s}
+            </button>
+          );
+        })}
+      </div>
+      <div className="mt-3 flex gap-2">
+        <input
+          value={custom}
+          onChange={e => setCustom(e.target.value)}
+          onKeyDown={e => { if (e.key === "Enter") { e.preventDefault(); addCustom(); } }}
+          placeholder="Outro tamanho (ex.: 38)"
+          className="input flex-1"
+        />
+        <button type="button" onClick={addCustom} className="px-4 border border-border text-xs uppercase tracking-[0.18em]">Adicionar</button>
+      </div>
+      <p className="mt-2 text-[11px] text-muted-foreground">
+        {value.length ? `Selecionados: ${value.join(" · ")}` : "Nenhum tamanho selecionado."}
+      </p>
     </div>
   );
 }
