@@ -7,6 +7,16 @@ export interface User {
   role: Role;
 }
 
+export interface ProductVariant {
+  id: string;
+  name: string;
+  hex: string;
+  images: string[];
+  primaryImage?: string;
+  /** true quando o admin escolheu o hex manualmente (evita sobrescrever ao renomear). */
+  touchedHex?: boolean;
+}
+
 export interface Product {
   id: string;
   slug?: string;
@@ -18,6 +28,7 @@ export interface Product {
   images: string[];
   sizes: string[];
   colors: string[];
+  variants?: ProductVariant[];
   featured?: boolean;
   isNew?: boolean;
   stock: number;

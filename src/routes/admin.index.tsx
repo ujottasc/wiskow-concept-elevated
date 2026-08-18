@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { TrendingUp, ShoppingCart, Users, Package, ArrowUpRight } from "lucide-react";
 import { PageHeader } from "@/components/AdminLayout";
+import { coverImages } from "@/lib/product-variants";
 import { useStore, formatPrice } from "@/lib/store";
 
 export const Route = createFileRoute("/admin/")({
@@ -68,7 +69,7 @@ function Dashboard() {
           <div className="mt-6 space-y-4">
             {products.slice(0, 4).map(p => (
               <div key={p.id} className="flex items-center gap-3">
-                <img src={p.images[0]} alt="" className="w-12 h-14 shrink-0 object-cover" />
+                <img src={coverImages(p)[0]} alt="" className="w-12 h-14 shrink-0 object-cover" />
                 <div className="flex-1 min-w-0">
                   <p className="text-sm truncate">{p.name}</p>
                   <p className="text-xs text-muted-foreground">{formatPrice(p.price)}</p>

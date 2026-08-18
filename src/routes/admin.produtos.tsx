@@ -1,8 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
+import { toast } from "sonner";
 import { Plus, Search, Pencil, Trash2 } from "lucide-react";
 import { PageHeader, AdminDrawer } from "@/components/AdminLayout";
 import { ImageUploader } from "@/components/ImageUploader";
+import { ColorVariantsEditor } from "@/components/ColorVariantsEditor";
 import { useStore, formatPrice } from "@/lib/store";
 import type { Product } from "@/lib/types";
 
@@ -19,7 +21,8 @@ const empty: Product = {
   description: "",
   images: [],
   sizes: ["P", "M", "G"],
-  colors: ["Preto"],
+  colors: [],
+  variants: [],
   featured: false,
   isNew: false,
   stock: 10,
@@ -42,10 +45,21 @@ function ProdutosAdmin() {
   const save = async () => {
     if (!editing) return;
     if (!editing.name.trim()) return;
+    const variants = (editing.variants ?? []).filter(v => v.name.trim());
+    if ((editing.variants ?? []).length !== variants.length) {
+      toast.error("Existe uma cor sem nome. Preencha ou remova antes de salvar.");
+      return;
+    }
+    const names = variants.map(v => v.name.trim().toLowerCase());
+    if (new Set(names).size !== names.length) {
+      toast.error("Há cores duplicadas neste produto.");
+      return;
+    }
     setSaving(true);
+    const payload = { ...editing, variants, colors: variants.length ? variants.map(v => v.name.trim()) : editing.colors };
     const exists = products.find(p => p.id === editing.id);
-    if (exists) await updateProduct(editing);
-    else await addProduct(editing);
+    if (exists) await updateProduct(payload);
+    else await addProduct(payload);
     setSaving(false);
     setEditing(null);
   };
@@ -153,17 +167,19 @@ function ProdutosAdmin() {
               <Field label="Descrição"><textarea rows={4} value={editing.description} onChange={e => setEditing({ ...editing, description: e.target.value })} className="input" /></Field>
 
               <ImageUploader
-                label="Imagens"
+                label="Imagens gerais (usadas quando não há cor selecionada)"
                 multiple
                 folder="produtos"
                 value={editing.images}
                 onChange={images => setEditing({ ...editing, images })}
               />
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <Field label="Tamanhos (vírgula)"><input value={editing.sizes.join(", ")} onChange={e => setEditing({ ...editing, sizes: e.target.value.split(",").map(s => s.trim()).filter(Boolean) })} className="input" /></Field>
-                <Field label="Cores (vírgula)"><input value={editing.colors.join(", ")} onChange={e => setEditing({ ...editing, colors: e.target.value.split(",").map(s => s.trim()).filter(Boolean) })} className="input" /></Field>
-              </div>
+              <ColorVariantsEditor
+                value={editing.variants ?? []}
+                onChange={variants => setEditing({ ...editing, variants })}
+              />
+
+              <Field label="Tamanhos (vírgula)"><input value={editing.sizes.join(", ")} onChange={e => setEditing({ ...editing, sizes: e.target.value.split(",").map(s => s.trim()).filter(Boolean) })} className="input" /></Field>
               <Field label="Estoque"><input type="number" min={0} value={editing.stock} onChange={e => setEditing({ ...editing, stock: +e.target.value })} className="input" /></Field>
 
               <div className="flex gap-6">

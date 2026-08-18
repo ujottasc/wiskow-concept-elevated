@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { PageHeader } from "@/components/AdminLayout";
+import { coverImages } from "@/lib/product-variants";
 import { useStore } from "@/lib/store";
 
 export const Route = createFileRoute("/admin/pagina-inicial")({
@@ -53,7 +54,7 @@ function HomeAdmin() {
               return (
                 <button key={p.id} onClick={() => updateSettings({ featuredProductIds: toggle(settings.featuredProductIds, p.id) })}
                   className={`border overflow-hidden text-left ${on ? "border-foreground ring-2 ring-foreground/20" : "border-border"}`}>
-                  <div className="aspect-[3/4] overflow-hidden"><img src={p.images[0]} alt={p.name} className="h-full w-full object-cover" /></div>
+                  <div className="aspect-[3/4] overflow-hidden"><img src={coverImages(p)[0]} alt={p.name} className="h-full w-full object-cover" /></div>
                   <div className="p-2"><p className="text-xs truncate">{p.name}</p></div>
                 </button>
               );

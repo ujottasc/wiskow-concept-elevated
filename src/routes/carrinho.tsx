@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Plus, Minus, Trash2 } from "lucide-react";
 import { SiteLayout } from "@/components/SiteLayout";
+import { coverImages } from "@/lib/product-variants";
 import { useStore, formatPrice } from "@/lib/store";
 
 export const Route = createFileRoute("/carrinho")({
@@ -45,7 +46,7 @@ function Carrinho() {
             <ul className="divide-y divide-border border-t border-b border-border">
               {items.map(item => (
                 <li key={item.idx} className="py-6 flex gap-6">
-                  <img src={item.product!.images[0]} alt="" className="w-32 h-40 object-cover" />
+                  <img src={coverImages(item.product!)[0]} alt="" className="w-32 h-40 object-cover" />
                   <div className="flex-1 flex flex-col">
                     <div className="flex justify-between">
                       <div>

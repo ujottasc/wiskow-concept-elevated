@@ -3,10 +3,12 @@ import { Heart } from "lucide-react";
 import { motion } from "framer-motion";
 import type { Product } from "@/lib/types";
 import { useStore, formatPrice } from "@/lib/store";
+import { coverImages } from "@/lib/product-variants";
 
 export function ProductCard({ product, index = 0 }: { product: Product; index?: number }) {
   const { favorites, toggleFavorite } = useStore();
   const isFav = favorites.includes(product.id);
+  const imgs = coverImages(product);
 
   return (
     <motion.div
@@ -19,14 +21,14 @@ export function ProductCard({ product, index = 0 }: { product: Product; index?: 
       <Link to="/produto/$id" params={{ id: product.id }} className="block">
         <div className="relative aspect-[3/4] overflow-hidden bg-muted">
           <img
-            src={product.images[0]}
+            src={imgs[0]}
             alt={product.name}
             className="h-full w-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-105"
             loading="lazy"
           />
-          {product.images[1] && (
+          {imgs[1] && (
             <img
-              src={product.images[1]}
+              src={imgs[1]}
               alt=""
               className="absolute inset-0 h-full w-full object-cover opacity-0 transition-opacity duration-700 group-hover:opacity-100"
               loading="lazy"
