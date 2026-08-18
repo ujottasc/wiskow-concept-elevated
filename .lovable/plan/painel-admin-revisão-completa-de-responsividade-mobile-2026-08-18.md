@@ -30,4 +30,6 @@ Correção: card empilhado no mobile (imagem em cima, conteúdo abaixo) e linha 
 
 ## Verificação
 
-Após a implementação, navegar por todas as rotas do admin em viewport de celular (375px), tablet (768px) e desktop com automação de navegador, capturando telas para confirmar que cada botão de editar/excluir está visível e clicável, e rodar a verificação de tipos.
+Após a implementação, navegar por todas as rotas do admin em viewport de celular (375px), tablet (768px) e desktop com automação de navegador, capturando telas para confirmar que cada botão de editar/excluir está visível e clicável, e rodar a verificação de tipos.  
+  
+**IMPORTANTE:** Faça somente as alterações necessárias para corrigir a responsividade e usabilidade mobile do painel administrativo. NÃO altere regras de negócio, autenticação, banco de dados, permissões, CRUD, lógica de produtos, banners, pedidos ou outras funcionalidades que já estejam funcionando corretamente. Preserve toda a funcionalidade existente. Antes de finalizar, confirme que as alterações não introduziram regressões em desktop/tablet e que todas as ações continuam funcionando normalmente.
