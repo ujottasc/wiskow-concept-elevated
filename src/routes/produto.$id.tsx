@@ -120,7 +120,7 @@ function ProdutoPage() {
             <div className="mt-3 flex gap-2 flex-wrap">
               {product.sizes.map(s => (
                 <button key={s} onClick={() => setSize(s)}
-                  className={`w-12 h-12 text-xs border ${size === s ? "border-foreground bg-foreground text-background" : "border-border"}`}>
+                  className={`min-w-12 px-3 h-12 text-xs border ${size === s ? "border-foreground bg-foreground text-background" : "border-border"}`}>
                   {s}
                 </button>
               ))}
