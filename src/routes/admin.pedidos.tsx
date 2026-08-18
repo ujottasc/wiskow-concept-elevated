@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
-import { X, MessageCircle } from "lucide-react";
-import { PageHeader } from "@/components/AdminLayout";
+import { MessageCircle } from "lucide-react";
+import { PageHeader, AdminDrawer } from "@/components/AdminLayout";
 import { useStore, formatPrice } from "@/lib/store";
 import type { Order, OrderStatus } from "@/lib/types";
 
@@ -26,17 +26,19 @@ function PedidosAdmin() {
     <div>
       <PageHeader title="Pedidos" subtitle="Vendas" />
 
-      <div className="flex flex-wrap gap-2 mb-6 items-center">
+      <div className="mb-6 space-y-3">
+      <div className="flex gap-2 overflow-x-auto pb-1 -mx-1 px-1 sm:flex-wrap sm:overflow-visible">
         {(["Todos", ...STATUSES] as const).map(s => (
           <button key={s} onClick={() => setFilter(s)}
-            className={`px-4 py-2 text-[10px] uppercase tracking-[0.2em] border ${filter === s ? "bg-foreground text-background border-foreground" : "border-border text-muted-foreground"}`}>
+            className={`shrink-0 px-4 min-h-11 text-[10px] uppercase tracking-[0.2em] border ${filter === s ? "bg-foreground text-background border-foreground" : "border-border text-muted-foreground"}`}>
             {s}
           </button>
         ))}
-        <input value={query} onChange={e => setQuery(e.target.value)} placeholder="Buscar cliente" className="ml-auto border border-border px-3 py-2 text-sm bg-transparent" />
+      </div>
+      <input value={query} onChange={e => setQuery(e.target.value)} placeholder="Buscar cliente" className="w-full sm:w-64 sm:ml-auto sm:block border border-border px-3 py-2 text-sm bg-transparent" />
       </div>
 
-      <div className="bg-card border border-border overflow-x-auto">
+      <div className="hidden md:block bg-card border border-border overflow-x-auto">
         <table className="w-full text-sm">
           <thead className="border-b border-border">
             <tr className="text-left">
@@ -67,14 +69,34 @@ function PedidosAdmin() {
         {list.length === 0 && <p className="p-6 text-sm text-muted-foreground">Nenhum pedido encontrado.</p>}
       </div>
 
+
+      {/* Pedidos em cards no mobile */}
+      <div className="md:hidden space-y-3">
+        {list.map(o => (
+          <div key={o.id} className="bg-card border border-border p-4">
+            <button onClick={() => setDetail(o)} className="w-full text-left">
+              <div className="flex items-start justify-between gap-3">
+                <div className="min-w-0">
+                  <p className="font-mono text-xs text-muted-foreground">#{o.id.slice(0, 8).toUpperCase()}</p>
+                  <p className="mt-1 break-words">{o.customer}</p>
+                  <p className="text-xs text-muted-foreground">{o.date}</p>
+                </div>
+                <p className="shrink-0 font-serif text-lg">{formatPrice(o.total)}</p>
+              </div>
+            </button>
+            <select value={o.status} onChange={e => void updateOrderStatus(o.id, e.target.value as OrderStatus)}
+              className="mt-3 w-full border border-border bg-transparent px-3 min-h-11 text-[10px] uppercase tracking-[0.2em]">
+              {STATUSES.map(s => <option key={s} value={s}>{s}</option>)}
+            </select>
+          </div>
+        ))}
+        {list.length === 0 && <p className="text-sm text-muted-foreground">Nenhum pedido encontrado.</p>}
+      </div>
+
       {detail && (
-        <div className="fixed inset-0 z-50 bg-black/50 flex justify-end" onClick={() => setDetail(null)}>
-          <div className="w-full max-w-lg bg-background h-full overflow-y-auto" onClick={e => e.stopPropagation()}>
-            <div className="flex items-center justify-between p-6 border-b border-border">
-              <h2 className="font-serif text-2xl">Pedido #{detail.id.slice(0, 8).toUpperCase()}</h2>
-              <button onClick={() => setDetail(null)} aria-label="Fechar"><X className="h-5 w-5" /></button>
-            </div>
-            <div className="p-6 space-y-6 text-sm">
+        <AdminDrawer title={`Pedido #${detail.id.slice(0, 8).toUpperCase()}`} onClose={() => setDetail(null)}>
+          <div className="space-y-6 text-sm">
+
               <div>
                 <p className="eyebrow text-muted-foreground">Cliente</p>
                 <p className="mt-1">{detail.customer}</p>
@@ -111,9 +133,8 @@ function PedidosAdmin() {
                   {STATUSES.map(s => <option key={s} value={s}>{s}</option>)}
                 </select>
               </div>
-            </div>
           </div>
-        </div>
+        </AdminDrawer>
       )}
     </div>
   );
