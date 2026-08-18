@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as SobreRouteImport } from './routes/sobre'
 import { Route as NovaColecaoRouteImport } from './routes/nova-colecao'
 import { Route as LoginRouteImport } from './routes/login'
+import { Route as InformacoesRouteImport } from './routes/informacoes'
 import { Route as FavoritosRouteImport } from './routes/favoritos'
 import { Route as ContatoRouteImport } from './routes/contato'
 import { Route as ColecoesRouteImport } from './routes/colecoes'
@@ -48,6 +49,11 @@ const NovaColecaoRoute = NovaColecaoRouteImport.update({
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
   path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const InformacoesRoute = InformacoesRouteImport.update({
+  id: '/informacoes',
+  path: '/informacoes',
   getParentRoute: () => rootRouteImport,
 } as any)
 const FavoritosRoute = FavoritosRouteImport.update({
@@ -169,6 +175,7 @@ export interface FileRoutesByFullPath {
   '/colecoes': typeof ColecoesRoute
   '/contato': typeof ContatoRoute
   '/favoritos': typeof FavoritosRoute
+  '/informacoes': typeof InformacoesRoute
   '/login': typeof LoginRoute
   '/nova-colecao': typeof NovaColecaoRoute
   '/sobre': typeof SobreRoute
@@ -195,6 +202,7 @@ export interface FileRoutesByTo {
   '/colecoes': typeof ColecoesRoute
   '/contato': typeof ContatoRoute
   '/favoritos': typeof FavoritosRoute
+  '/informacoes': typeof InformacoesRoute
   '/login': typeof LoginRoute
   '/nova-colecao': typeof NovaColecaoRoute
   '/sobre': typeof SobreRoute
@@ -223,6 +231,7 @@ export interface FileRoutesById {
   '/colecoes': typeof ColecoesRoute
   '/contato': typeof ContatoRoute
   '/favoritos': typeof FavoritosRoute
+  '/informacoes': typeof InformacoesRoute
   '/login': typeof LoginRoute
   '/nova-colecao': typeof NovaColecaoRoute
   '/sobre': typeof SobreRoute
@@ -252,6 +261,7 @@ export interface FileRouteTypes {
     | '/colecoes'
     | '/contato'
     | '/favoritos'
+    | '/informacoes'
     | '/login'
     | '/nova-colecao'
     | '/sobre'
@@ -278,6 +288,7 @@ export interface FileRouteTypes {
     | '/colecoes'
     | '/contato'
     | '/favoritos'
+    | '/informacoes'
     | '/login'
     | '/nova-colecao'
     | '/sobre'
@@ -305,6 +316,7 @@ export interface FileRouteTypes {
     | '/colecoes'
     | '/contato'
     | '/favoritos'
+    | '/informacoes'
     | '/login'
     | '/nova-colecao'
     | '/sobre'
@@ -333,6 +345,7 @@ export interface RootRouteChildren {
   ColecoesRoute: typeof ColecoesRoute
   ContatoRoute: typeof ContatoRoute
   FavoritosRoute: typeof FavoritosRoute
+  InformacoesRoute: typeof InformacoesRoute
   LoginRoute: typeof LoginRoute
   NovaColecaoRoute: typeof NovaColecaoRoute
   SobreRoute: typeof SobreRoute
@@ -361,6 +374,13 @@ declare module '@tanstack/react-router' {
       path: '/login'
       fullPath: '/login'
       preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/informacoes': {
+      id: '/informacoes'
+      path: '/informacoes'
+      fullPath: '/informacoes'
+      preLoaderRoute: typeof InformacoesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/favoritos': {
@@ -562,6 +582,7 @@ const rootRouteChildren: RootRouteChildren = {
   ColecoesRoute: ColecoesRoute,
   ContatoRoute: ContatoRoute,
   FavoritosRoute: FavoritosRoute,
+  InformacoesRoute: InformacoesRoute,
   LoginRoute: LoginRoute,
   NovaColecaoRoute: NovaColecaoRoute,
   SobreRoute: SobreRoute,

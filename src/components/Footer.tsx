@@ -28,6 +28,7 @@ export function Footer() {
           <p className="eyebrow text-muted-foreground">Atendimento</p>
           <ul className="mt-5 space-y-3 text-sm">
             <li><Link to="/contato" className="link-underline">Contato</Link></li>
+            <li><Link to="/informacoes" className="link-underline">Informações</Link></li>
             <li><a href={`https://wa.me/${settings.whatsapp}`} target="_blank" rel="noreferrer" className="link-underline">WhatsApp</a></li>
             <li>Segunda a Sexta, 10h — 19h</li>
           </ul>

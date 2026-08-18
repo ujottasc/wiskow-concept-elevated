@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
-import { Instagram, MessageCircle, MapPin, Mail } from "lucide-react";
+import { Instagram, MessageCircle, Mail } from "lucide-react";
 import { SiteLayout } from "@/components/SiteLayout";
 import { useStore } from "@/lib/store";
 
@@ -19,6 +19,7 @@ export const Route = createFileRoute("/contato")({
 function Contato() {
   const { settings } = useStore();
   const [sent, setSent] = useState(false);
+  const [form, setForm] = useState({ nome: "", email: "", telefone: "", mensagem: "" });
 
   return (
     <SiteLayout>
@@ -53,37 +54,48 @@ function Contato() {
               </div>
             </div>
             <div className="flex items-start gap-4">
-              <MapPin className="h-5 w-5 mt-1" />
+              <MessageCircle className="h-5 w-5 mt-1" />
               <div>
                 <p className="text-sm font-medium">Atendimento sob agendamento</p>
-                <p className="text-xs text-muted-foreground mt-1">Porto Alegre — RS</p>
+                <p className="text-xs text-muted-foreground mt-1">Segunda a sexta, das 10h às 19h.</p>
               </div>
-            </div>
-          </div>
-
-          <div className="mt-10 aspect-[16/9] overflow-hidden bg-secondary/40 border border-border flex items-center justify-center">
-            <div className="text-center text-muted-foreground">
-              <MapPin className="h-6 w-6 mx-auto" />
-              <p className="mt-2 text-xs uppercase tracking-[0.22em]">Mapa · placeholder</p>
             </div>
           </div>
         </div>
 
         <div>
           <h2 className="font-serif text-3xl">Envie uma mensagem</h2>
-          <form onSubmit={e => { e.preventDefault(); setSent(true); }} className="mt-8 space-y-6">
-            {["Nome", "E-mail", "Telefone"].map(f => (
+          <form
+            onSubmit={e => {
+              e.preventDefault();
+              const text = `Olá! Sou ${form.nome}.%0A${form.mensagem}%0A%0AContato: ${form.email} · ${form.telefone}`;
+              window.open(`https://wa.me/${settings.whatsapp}?text=${text}`, "_blank", "noopener");
+              setSent(true);
+            }}
+            className="mt-8 space-y-6"
+          >
+            {(["nome", "email", "telefone"] as const).map(f => (
               <div key={f}>
-                <label className="block text-[10px] uppercase tracking-[0.22em] text-muted-foreground mb-2">{f}</label>
-                <input type={f === "E-mail" ? "email" : "text"} required className="w-full bg-transparent border-b border-border py-2 text-sm outline-none focus:border-foreground transition-colors" />
+                <label className="block text-[10px] uppercase tracking-[0.22em] text-muted-foreground mb-2">
+                  {f === "email" ? "E-mail" : f === "nome" ? "Nome" : "Telefone"}
+                </label>
+                <input
+                  type={f === "email" ? "email" : "text"}
+                  required
+                  value={form[f]}
+                  onChange={e => { setSent(false); setForm({ ...form, [f]: e.target.value }); }}
+                  className="w-full bg-transparent border-b border-border py-2 text-sm outline-none focus:border-foreground transition-colors"
+                />
               </div>
             ))}
             <div>
               <label className="block text-[10px] uppercase tracking-[0.22em] text-muted-foreground mb-2">Mensagem</label>
-              <textarea rows={4} required className="w-full bg-transparent border-b border-border py-2 text-sm outline-none focus:border-foreground transition-colors resize-none" />
+              <textarea rows={4} required value={form.mensagem}
+                onChange={e => { setSent(false); setForm({ ...form, mensagem: e.target.value }); }}
+                className="w-full bg-transparent border-b border-border py-2 text-sm outline-none focus:border-foreground transition-colors resize-none" />
             </div>
             <button className="w-full bg-foreground text-background py-4 text-xs uppercase tracking-[0.25em] hover:bg-accent transition-colors">
-              {sent ? "Enviado — obrigada!" : "Enviar mensagem"}
+              {sent ? "Conversa aberta no WhatsApp" : "Enviar pelo WhatsApp"}
             </button>
           </form>
         </div>
