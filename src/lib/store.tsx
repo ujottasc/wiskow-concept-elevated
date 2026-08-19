@@ -354,8 +354,8 @@ export function StoreProvider({ children }: { children: ReactNode }) {
         name: p.name, price: p.price, category_id: p.category || null, collection_id: p.collectionId || null,
         description: p.description, images: p.images, sizes: p.sizes, colors: p.colors,
         variants: JSON.parse(JSON.stringify(p.variants ?? [])),
-        featured: !!p.featured, is_new: !!p.isNew, stock: p.stock,
-      });
+        featured: !!p.featured, is_new: !!p.isNew, stock: p.stock, status: p.status,
+      } as any);
       await handle(error, "Produto criado.");
     },
     updateProduct: async p => {
