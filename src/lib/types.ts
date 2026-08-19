@@ -13,6 +13,8 @@ export interface ProductVariant {
   hex: string;
   images: string[];
   primaryImage?: string;
+  /** Quantidade disponível desta cor. */
+  stock?: number;
   /** true quando o admin escolheu o hex manualmente (evita sobrescrever ao renomear). */
   touchedHex?: boolean;
 }
