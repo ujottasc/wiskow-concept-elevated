@@ -90,6 +90,12 @@ function ProdutoPage() {
           <h1 className="font-serif text-4xl md:text-5xl mt-3">{product.name}</h1>
           <p className="mt-4 text-2xl">{formatPrice(product.price)}</p>
           <p className="mt-2 text-xs text-muted-foreground uppercase tracking-[0.2em]">Em até 6x sem juros</p>
+          {product.status === "Sob encomenda" && (
+            <div className="mt-4 border border-border p-3 text-sm text-muted-foreground">
+              <strong className="text-foreground uppercase tracking-[0.2em] text-xs">Sob encomenda</strong>
+              <p className="mt-1">Prazo de até 5 dias após a confirmação do pagamento.</p>
+            </div>
+          )}
 
           <p className="mt-8 text-sm leading-relaxed text-muted-foreground">{product.description}</p>
 
