@@ -26,6 +26,7 @@ const empty: Product = {
   featured: false,
   isNew: false,
   stock: 10,
+  status: "Disponível",
 };
 
 function ProdutosAdmin() {
