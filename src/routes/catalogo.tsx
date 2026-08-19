@@ -25,6 +25,7 @@ export const Route = createFileRoute("/catalogo")({
 });
 
 type Sort = "recent" | "asc" | "desc";
+type StatusFilter = "all" | "Disponível" | "Sob encomenda";
 
 function Catalogo() {
   const { cat, q } = Route.useSearch();
@@ -34,11 +35,13 @@ function Catalogo() {
   const [query, setQuery] = useState(q ?? "");
   const [sort, setSort] = useState<Sort>("recent");
   const [filtersOpen, setFiltersOpen] = useState(false);
+  const [statusFilter, setStatusFilter] = useState<StatusFilter>("all");
 
   const filtered = useMemo(() => {
     let r = [...products];
     if (selectedCat) r = r.filter(p => p.category === selectedCat);
     if (selectedCol) r = r.filter(p => p.collectionId === selectedCol);
+    if (statusFilter !== "all") r = r.filter(p => p.status === statusFilter);
     if (query.trim()) {
       const q = query.toLowerCase();
       r = r.filter(p => p.name.toLowerCase().includes(q) || p.description.toLowerCase().includes(q));
@@ -46,7 +49,13 @@ function Catalogo() {
     if (sort === "asc") r.sort((a, b) => a.price - b.price);
     if (sort === "desc") r.sort((a, b) => b.price - a.price);
     return r;
-  }, [products, selectedCat, selectedCol, query, sort]);
+  }, [products, selectedCat, selectedCol, query, sort, statusFilter]);
+
+  const statusTabs: { key: StatusFilter; label: string }[] = [
+    { key: "all", label: "Todos" },
+    { key: "Disponível", label: "Disponíveis" },
+    { key: "Sob encomenda", label: "Sob encomenda" },
+  ];
 
   return (
     <SiteLayout>
