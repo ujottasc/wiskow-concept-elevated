@@ -105,6 +105,19 @@ function Catalogo() {
 
           {/* MAIN */}
           <div className="flex-1">
+            <div className="flex items-center gap-2 overflow-x-auto pb-2 mb-4">
+              {statusTabs.map(tab => (
+                <button
+                  key={tab.key}
+                  onClick={() => setStatusFilter(tab.key)}
+                  aria-pressed={statusFilter === tab.key}
+                  className={`px-4 py-2 text-xs uppercase tracking-[0.22em] border whitespace-nowrap transition-colors ${statusFilter === tab.key ? "border-foreground bg-foreground text-background" : "border-border hover:border-foreground/50"}`}
+                >
+                  {tab.label}
+                </button>
+              ))}
+            </div>
+
             <div className="flex items-center justify-between border-y border-border py-4 mb-8">
               <button onClick={() => setFiltersOpen(v => !v)} className="lg:hidden inline-flex items-center gap-2 text-xs uppercase tracking-[0.22em]">
                 <SlidersHorizontal className="h-4 w-4" /> Filtros
