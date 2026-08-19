@@ -39,6 +39,11 @@ export function ProductCard({ product, index = 0 }: { product: Product; index?: 
               Novo
             </span>
           )}
+          {product.status === "Sob encomenda" && (
+            <span className="absolute top-3 left-3 bg-foreground/90 backdrop-blur text-[10px] uppercase tracking-[0.22em] px-2 py-1 text-background">
+              Sob encomenda
+            </span>
+          )}
           <button
             aria-label="Favoritar"
             onClick={(e) => { e.preventDefault(); toggleFavorite(product.id); }}
