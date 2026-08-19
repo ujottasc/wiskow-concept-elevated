@@ -200,6 +200,7 @@ export type Database = {
           price: number
           sizes: string[]
           slug: string
+          status: string
           stock: number
           variants: Json
         }
@@ -218,6 +219,7 @@ export type Database = {
           price?: number
           sizes?: string[]
           slug: string
+          status?: string
           stock?: number
           variants?: Json
         }
@@ -236,6 +238,7 @@ export type Database = {
           price?: number
           sizes?: string[]
           slug?: string
+          status?: string
           stock?: number
           variants?: Json
         }
