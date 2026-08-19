@@ -34,16 +34,18 @@ export function ProductCard({ product, index = 0 }: { product: Product; index?: 
               loading="lazy"
             />
           )}
-          {product.isNew && (
-            <span className="absolute top-3 left-3 bg-background/90 backdrop-blur text-[10px] uppercase tracking-[0.22em] px-2 py-1">
-              Novo
-            </span>
-          )}
-          {product.status === "Sob encomenda" && (
-            <span className="absolute top-3 left-3 bg-foreground/90 backdrop-blur text-[10px] uppercase tracking-[0.22em] px-2 py-1 text-background">
-              Sob encomenda
-            </span>
-          )}
+          <div className="absolute top-3 left-3 flex flex-col gap-1">
+            {product.isNew && (
+              <span className="bg-background/90 backdrop-blur text-[10px] uppercase tracking-[0.22em] px-2 py-1">
+                Novo
+              </span>
+            )}
+            {product.status === "Sob encomenda" && (
+              <span className="bg-foreground/90 backdrop-blur text-[10px] uppercase tracking-[0.22em] px-2 py-1 text-background">
+                Sob encomenda
+              </span>
+            )}
+          </div>
           <button
             aria-label="Favoritar"
             onClick={(e) => { e.preventDefault(); toggleFavorite(product.id); }}
