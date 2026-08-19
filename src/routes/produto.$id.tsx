@@ -41,6 +41,8 @@ function ProdutoPage() {
   const color = activeVariant?.name ?? product.colors[0] ?? "";
   const gallery = variantGallery(product, activeVariant);
   const selectVariant = (id: string) => { setVariantId(id); setActiveImg(0); };
+  const variantStock = activeVariant && typeof activeVariant.stock === "number" ? activeVariant.stock : null;
+  const soldOut = variantStock !== null && variantStock <= 0;
   const isFav = favorites.includes(product.id);
   const related = products.filter(p => p.id !== product.id && p.category === product.category).slice(0, 4);
 
@@ -92,7 +94,14 @@ function ProdutoPage() {
           <p className="mt-8 text-sm leading-relaxed text-muted-foreground">{product.description}</p>
 
           <div className={`mt-10 ${variants.length ? "" : "hidden"}`}>
-            <p className="eyebrow text-muted-foreground">Cor · {color}</p>
+            <p className="eyebrow text-muted-foreground">
+              Cor · {color}
+              {variantStock !== null && (
+                <span className={soldOut ? "text-destructive ml-2" : "ml-2"}>
+                  · {soldOut ? "Esgotado" : `${variantStock} disponível(is)`}
+                </span>
+              )}
+            </p>
             <div className="mt-3 flex gap-3 flex-wrap">
               {variants.map(v => (
                 <button
@@ -128,8 +137,8 @@ function ProdutoPage() {
           </div>
 
           <div className="mt-10 flex gap-3">
-            <button onClick={buy} className="flex-1 bg-foreground text-background py-4 text-xs uppercase tracking-[0.25em] hover:bg-accent transition-colors inline-flex items-center justify-center gap-2">
-              <ShoppingBag className="h-4 w-4" /> Adicionar à sacola
+            <button onClick={buy} disabled={soldOut} className="disabled:opacity-50 disabled:cursor-not-allowed flex-1 bg-foreground text-background py-4 text-xs uppercase tracking-[0.25em] hover:bg-accent transition-colors inline-flex items-center justify-center gap-2">
+              <ShoppingBag className="h-4 w-4" /> {soldOut ? "Esgotado" : "Adicionar à sacola"}
             </button>
             <button onClick={() => toggleFavorite(product.id)} className="w-14 border border-border flex items-center justify-center hover:border-foreground">
               <Heart className={`h-4 w-4 ${isFav ? "fill-accent text-accent" : ""}`} />
