@@ -20,7 +20,7 @@ export function ColorVariantsEditor({ value, onChange }: Props) {
     onChange(value.map(v => (v.id === id ? { ...v, ...data } : v)));
 
   const add = () => {
-    const v: ProductVariant = { id: newId(), name: "", hex: "#111111", images: [] };
+    const v: ProductVariant = { id: newId(), name: "", hex: "#111111", images: [], stock: 0 };
     onChange([...value, v]);
     setOpen(v.id);
   };
@@ -78,7 +78,7 @@ export function ColorVariantsEditor({ value, onChange }: Props) {
                   className="flex-1 min-w-0 text-left"
                 >
                   <span className="block text-sm truncate">{v.name || "Nova cor"}</span>
-                  <span className="block text-xs text-muted-foreground">{imgs.length} imagem(ns)</span>
+                  <span className="block text-xs text-muted-foreground">{imgs.length} imagem(ns) · {v.stock ?? 0} em estoque</span>
                 </button>
                 <button type="button" onClick={() => setOpen(isOpen ? null : v.id)} aria-label={isOpen ? "Recolher" : "Expandir"} className="w-11 h-11 flex items-center justify-center border border-border">
                   {isOpen ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
@@ -114,6 +114,16 @@ export function ColorVariantsEditor({ value, onChange }: Props) {
                       <input
                         value={v.hex}
                         onChange={e => patch(v.id, { hex: e.target.value, touchedHex: true } as Partial<ProductVariant>)}
+                        className="w-full border border-border bg-transparent px-3 py-2 text-sm"
+                      />
+                    </label>
+                    <label className="block sm:col-span-3">
+                      <span className="block text-[10px] uppercase tracking-[0.22em] text-muted-foreground mb-2">Quantidade em estoque desta cor</span>
+                      <input
+                        type="number"
+                        min={0}
+                        value={v.stock ?? 0}
+                        onChange={e => patch(v.id, { stock: Math.max(0, Math.floor(+e.target.value || 0)) })}
                         className="w-full border border-border bg-transparent px-3 py-2 text-sm"
                       />
                     </label>
