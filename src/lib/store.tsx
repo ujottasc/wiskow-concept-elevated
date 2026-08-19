@@ -48,6 +48,7 @@ const toProduct = (r: DbRow): Product => ({
   featured: Boolean(r["featured"]),
   isNew: Boolean(r["is_new"]),
   stock: Number(r["stock"] ?? 0),
+  status: ((r["status"] as string) || "Disponível") as Product["status"],
 });
 
 const toBanner = (r: DbRow): Banner => ({
@@ -353,8 +354,8 @@ export function StoreProvider({ children }: { children: ReactNode }) {
         name: p.name, price: p.price, category_id: p.category || null, collection_id: p.collectionId || null,
         description: p.description, images: p.images, sizes: p.sizes, colors: p.colors,
         variants: JSON.parse(JSON.stringify(p.variants ?? [])),
-        featured: !!p.featured, is_new: !!p.isNew, stock: p.stock,
-      });
+        featured: !!p.featured, is_new: !!p.isNew, stock: p.stock, status: p.status,
+      } as any);
       await handle(error, "Produto criado.");
     },
     updateProduct: async p => {
@@ -363,8 +364,8 @@ export function StoreProvider({ children }: { children: ReactNode }) {
         name: p.name, price: p.price, category_id: p.category || null, collection_id: p.collectionId || null,
         description: p.description, images: p.images, sizes: p.sizes, colors: p.colors,
         variants: JSON.parse(JSON.stringify(p.variants ?? [])),
-        featured: !!p.featured, is_new: !!p.isNew, stock: p.stock,
-      }).eq("id", p.id);
+        featured: !!p.featured, is_new: !!p.isNew, stock: p.stock, status: p.status,
+      } as any).eq("id", p.id);
       await handle(error, "Produto atualizado.");
     },
     removeProduct: async id => {

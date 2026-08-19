@@ -26,6 +26,7 @@ const empty: Product = {
   featured: false,
   isNew: false,
   stock: 10,
+  status: "Disponível",
 };
 
 function ProdutosAdmin() {
@@ -151,6 +152,12 @@ function ProdutosAdmin() {
         <AdminDrawer title={`${products.find(p => p.id === editing.id) ? "Editar" : "Novo"} produto`} onClose={() => setEditing(null)}>
 
               <Field label="Nome"><input value={editing.name} onChange={e => setEditing({ ...editing, name: e.target.value })} className="input" /></Field>
+              <Field label="Status">
+                <select value={editing.status} onChange={e => setEditing({ ...editing, status: e.target.value as Product["status"] })} className="input">
+                  <option value="Disponível">Disponível</option>
+                  <option value="Sob encomenda">Sob encomenda</option>
+                </select>
+              </Field>
               <Field label="Preço"><input type="number" min={0} step="0.01" value={editing.price} onChange={e => setEditing({ ...editing, price: +e.target.value })} className="input" /></Field>
               <Field label="Categoria">
                 <select value={editing.category} onChange={e => setEditing({ ...editing, category: e.target.value })} className="input">

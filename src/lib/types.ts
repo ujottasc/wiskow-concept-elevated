@@ -34,6 +34,7 @@ export interface Product {
   featured?: boolean;
   isNew?: boolean;
   stock: number;
+  status: "Disponível" | "Sob encomenda";
 }
 
 export interface Collection {

@@ -25,6 +25,7 @@ export const Route = createFileRoute("/catalogo")({
 });
 
 type Sort = "recent" | "asc" | "desc";
+type StatusFilter = "all" | "Disponível" | "Sob encomenda";
 
 function Catalogo() {
   const { cat, q } = Route.useSearch();
@@ -34,11 +35,13 @@ function Catalogo() {
   const [query, setQuery] = useState(q ?? "");
   const [sort, setSort] = useState<Sort>("recent");
   const [filtersOpen, setFiltersOpen] = useState(false);
+  const [statusFilter, setStatusFilter] = useState<StatusFilter>("all");
 
   const filtered = useMemo(() => {
     let r = [...products];
     if (selectedCat) r = r.filter(p => p.category === selectedCat);
     if (selectedCol) r = r.filter(p => p.collectionId === selectedCol);
+    if (statusFilter !== "all") r = r.filter(p => p.status === statusFilter);
     if (query.trim()) {
       const q = query.toLowerCase();
       r = r.filter(p => p.name.toLowerCase().includes(q) || p.description.toLowerCase().includes(q));
@@ -46,7 +49,13 @@ function Catalogo() {
     if (sort === "asc") r.sort((a, b) => a.price - b.price);
     if (sort === "desc") r.sort((a, b) => b.price - a.price);
     return r;
-  }, [products, selectedCat, selectedCol, query, sort]);
+  }, [products, selectedCat, selectedCol, query, sort, statusFilter]);
+
+  const statusTabs: { key: StatusFilter; label: string }[] = [
+    { key: "all", label: "Todos" },
+    { key: "Disponível", label: "Disponíveis" },
+    { key: "Sob encomenda", label: "Sob encomenda" },
+  ];
 
   return (
     <SiteLayout>
@@ -96,6 +105,19 @@ function Catalogo() {
 
           {/* MAIN */}
           <div className="flex-1">
+            <div className="flex items-center gap-2 overflow-x-auto pb-2 mb-4">
+              {statusTabs.map(tab => (
+                <button
+                  key={tab.key}
+                  onClick={() => setStatusFilter(tab.key)}
+                  aria-pressed={statusFilter === tab.key}
+                  className={`px-4 py-2 text-xs uppercase tracking-[0.22em] border whitespace-nowrap transition-colors ${statusFilter === tab.key ? "border-foreground bg-foreground text-background" : "border-border hover:border-foreground/50"}`}
+                >
+                  {tab.label}
+                </button>
+              ))}
+            </div>
+
             <div className="flex items-center justify-between border-y border-border py-4 mb-8">
               <button onClick={() => setFiltersOpen(v => !v)} className="lg:hidden inline-flex items-center gap-2 text-xs uppercase tracking-[0.22em]">
                 <SlidersHorizontal className="h-4 w-4" /> Filtros
