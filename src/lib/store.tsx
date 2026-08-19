@@ -48,6 +48,7 @@ const toProduct = (r: DbRow): Product => ({
   featured: Boolean(r["featured"]),
   isNew: Boolean(r["is_new"]),
   stock: Number(r["stock"] ?? 0),
+  status: ((r["status"] as string) || "Disponível") as Product["status"],
 });
 
 const toBanner = (r: DbRow): Banner => ({
