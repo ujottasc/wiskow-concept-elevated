@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { toast } from "sonner";
 import { useStore } from "@/lib/store";
 import { Logo } from "@/components/Logo";
-import { lovable } from "@/integrations/lovable/index";
+import { signInWithGoogle } from "@/lib/google-auth";
 
 type Search = { redirect?: string };
 
@@ -66,10 +66,7 @@ function LoginPage() {
     if (destination !== "/") callback.searchParams.set("redirect", destination);
 
     try {
-      const result = await lovable.auth.signInWithOAuth("google", {
-        redirect_uri: callback.toString(),
-        extraParams: { prompt: "select_account" },
-      });
+      const result = await signInWithGoogle(callback.toString());
       if (result.error) {
         setError("Não foi possível entrar com o Google. Tente novamente.");
         setLoading(false);
