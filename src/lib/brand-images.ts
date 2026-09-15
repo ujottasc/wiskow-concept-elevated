@@ -37,62 +37,65 @@ import ig39 from "@/assets/wiskow-ig39.jpg.asset.json";
 import ig40 from "@/assets/wiskow-ig40.jpg.asset.json";
 import ig41 from "@/assets/wiskow-ig41.jpg.asset.json";
 
+const lovableAsset = (url: string) =>
+  url.startsWith("/__l5e/") ? `https://wiskow-concept-elevated.lovable.app${url}` : url;
+
 export const IMG = {
-  bodyGrafite: ig01.url,
-  bodyGrafiteAlt: ig26.url,
+  bodyGrafite: lovableAsset(ig01.url),
+  bodyGrafiteAlt: lovableAsset(ig26.url),
 
-  caneladaOff: ig02.url,
-  caneladaOffAlt: ig10.url,
-  caneladaOffCostas: ig11.url,
-  caneladaOffLook: ig30.url,
+  caneladaOff: lovableAsset(ig02.url),
+  caneladaOffAlt: lovableAsset(ig10.url),
+  caneladaOffCostas: lovableAsset(ig11.url),
+  caneladaOffLook: lovableAsset(ig30.url),
 
-  croppedTomara: ig03.url,
+  croppedTomara: lovableAsset(ig03.url),
 
-  bodyCutout: ig05.url,
-  bodyCutoutAlt: ig39.url,
+  bodyCutout: lovableAsset(ig05.url),
+  bodyCutoutAlt: lovableAsset(ig39.url),
 
-  golaAltaOff: ig06.url,
+  golaAltaOff: lovableAsset(ig06.url),
 
-  ombroAOmbro: ig07.url,
-  ombroAOmbroAlt: ig15.url,
+  ombroAOmbro: lovableAsset(ig07.url),
+  ombroAOmbroAlt: lovableAsset(ig15.url),
 
-  decoteQuadrado: ig08.url,
-  decoteQuadradoAlt: ig17.url,
+  decoteQuadrado: lovableAsset(ig08.url),
+  decoteQuadradoAlt: lovableAsset(ig17.url),
 
-  topRenda: ig14.url,
-  topRendaAlt: ig41.url,
+  topRenda: lovableAsset(ig14.url),
+  topRendaAlt: lovableAsset(ig41.url),
 
-  chocolate: ig12.url,
-  chocolateAlt: ig23.url,
-  chocolateLook: ig35.url,
+  chocolate: lovableAsset(ig12.url),
+  chocolateAlt: lovableAsset(ig23.url),
+  chocolateLook: lovableAsset(ig35.url),
 
-  tachas: ig13.url,
+  tachas: lovableAsset(ig13.url),
 
-  conjuntoOff: ig16.url,
-  conjuntoOffAlt: ig20.url,
+  conjuntoOff: lovableAsset(ig16.url),
+  conjuntoOffAlt: lovableAsset(ig20.url),
 
-  vestidoCurto: ig19.url,
-  vestidoCurtoCostas: ig40.url,
+  vestidoCurto: lovableAsset(ig19.url),
+  vestidoCurtoCostas: lovableAsset(ig40.url),
 
-  amarracao: ig18.url,
-  amarracaoCostas: ig25.url,
+  amarracao: lovableAsset(ig18.url),
+  amarracaoCostas: lovableAsset(ig25.url),
 
-  vestidoLongo: ig32.url,
-  vestidoLongoAlt: ig29.url,
+  vestidoLongo: lovableAsset(ig32.url),
+  vestidoLongoAlt: lovableAsset(ig29.url),
 
-  conjuntoCutout: ig36.url,
-  conjuntoCutoutAlt: ig28.url,
+  conjuntoCutout: lovableAsset(ig36.url),
+  conjuntoCutoutAlt: lovableAsset(ig28.url),
 
-  calcaCouro: ig31.url,
-  calcaCouroAlt: ig34.url,
+  calcaCouro: lovableAsset(ig31.url),
+  calcaCouroAlt: lovableAsset(ig34.url),
 
-  jeansBaggy: ig37.url,
-  jeansBaggyAlt: ig38.url,
+  jeansBaggy: lovableAsset(ig37.url),
+  jeansBaggyAlt: lovableAsset(ig38.url),
 
-  blusaGrafite: ig22.url,
+  blusaGrafite: lovableAsset(ig22.url),
 
-  neon: ig09.url,
-  neonAlt: ig33.url,
+  neon: lovableAsset(ig09.url),
+  neonAlt: lovableAsset(ig33.url),
 } as const;
 
 export const instagramFeed = [
