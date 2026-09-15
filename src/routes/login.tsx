@@ -60,10 +60,27 @@ function LoginPage() {
 
   const google = async () => {
     setError(null);
-    const result = await lovable.auth.signInWithOAuth("google", { redirect_uri: window.location.origin });
-    if (result.error) { setError("Não foi possível entrar com o Google."); return; }
-    if (result.redirected) return;
-    navigate({ to: search.redirect ?? "/", replace: true });
+    setLoading(true);
+    const destination = search.redirect ?? "/";
+    const callback = new URL("/login", window.location.origin);
+    if (destination !== "/") callback.searchParams.set("redirect", destination);
+
+    try {
+      const result = await lovable.auth.signInWithOAuth("google", {
+        redirect_uri: callback.toString(),
+        extraParams: { prompt: "select_account" },
+      });
+      if (result.error) {
+        setError("Não foi possível entrar com o Google. Tente novamente.");
+        setLoading(false);
+        return;
+      }
+      if (result.redirected) return;
+      navigate({ to: destination, replace: true });
+    } catch {
+      setError("Não foi possível abrir o Google. Verifique se o navegador bloqueou a janela e tente novamente.");
+      setLoading(false);
+    }
   };
 
   const forgot = async () => {
@@ -100,9 +117,10 @@ function LoginPage() {
           <button
             type="button"
             onClick={google}
-            className="mt-8 w-full border border-border py-3 text-xs uppercase tracking-[0.22em] hover:border-foreground transition-colors"
+            disabled={loading}
+            className="mt-8 w-full border border-border py-3 text-xs uppercase tracking-[0.22em] hover:border-foreground transition-colors disabled:opacity-60"
           >
-            Continuar com Google
+            {loading ? "Abrindo Google..." : "Continuar com Google"}
           </button>
 
           <div className="mt-6 flex items-center gap-3 text-[10px] uppercase tracking-[0.22em] text-muted-foreground">
