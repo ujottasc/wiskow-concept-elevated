@@ -1,11 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { SiteLayout } from "@/components/SiteLayout";
-
-import neonAlt from "@/assets/wiskow-ig33.jpg";
-import caneladaOffLook from "@/assets/wiskow-ig30.jpg";
-import vestidoCurtoCostas from "@/assets/wiskow-ig40.jpg";
-import conjuntoCutout from "@/assets/wiskow-ig36.jpg";
+import { IMG } from "@/lib/brand-images";
 
 export const Route = createFileRoute("/sobre")({
   head: () => ({
@@ -45,7 +41,7 @@ function Sobre() {
           transition={{ duration: 1 }}
           className="aspect-[16/9] md:aspect-[21/9] overflow-hidden"
         >
-          <img src={neonAlt} alt="Editorial Wiskow Concept em luz neon" className="h-full w-full object-cover" />
+          <img src={IMG.neonAlt} alt="Editorial Wiskow Concept em luz neon" className="h-full w-full object-cover" />
         </motion.div>
       </section>
 
@@ -72,7 +68,7 @@ function Sobre() {
       <section className="container-x pb-24 grid gap-6 md:grid-cols-3">
         <div className="aspect-[3/4] overflow-hidden">
           <img
-            src={caneladaOffLook}
+            src={IMG.caneladaOffLook}
             className="h-full w-full object-cover"
             alt="Blusa canelada off white com jeans wide"
             loading="lazy"
@@ -81,7 +77,7 @@ function Sobre() {
 
         <div className="aspect-[3/4] overflow-hidden md:mt-16">
           <img
-            src={vestidoCurtoCostas}
+            src={IMG.vestidoCurtoCostas}
             className="h-full w-full object-cover"
             alt="Vestido curto preto de costas"
             loading="lazy"
@@ -90,7 +86,7 @@ function Sobre() {
 
         <div className="aspect-[3/4] overflow-hidden">
           <img
-            src={conjuntoCutout}
+            src={IMG.conjuntoCutout}
             className="h-full w-full object-cover"
             alt="Conjunto cut-out preto"
             loading="lazy"
