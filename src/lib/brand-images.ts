@@ -24,17 +24,17 @@ import ig25 from "@/assets/wiskow-ig25.jpg.asset.json";
 import ig26 from "@/assets/wiskow-ig26.jpg.asset.json";
 import ig28 from "@/assets/wiskow-ig28.jpg.asset.json";
 import ig29 from "@/assets/wiskow-ig29.jpg.asset.json";
-import ig30 from "@/assets/wiskow-ig30.jpg.asset.json";
+import ig30 from "@/assets/wiskow-ig30.jpg";
 import ig31 from "@/assets/wiskow-ig31.jpg.asset.json";
 import ig32 from "@/assets/wiskow-ig32.jpg.asset.json";
-import ig33 from "@/assets/wiskow-ig33.jpg.asset.json";
+import ig33 from "@/assets/wiskow-ig33.jpg";
 import ig34 from "@/assets/wiskow-ig34.jpg.asset.json";
 import ig35 from "@/assets/wiskow-ig35.jpg.asset.json";
-import ig36 from "@/assets/wiskow-ig36.jpg.asset.json";
+import ig36 from "@/assets/wiskow-ig36.jpg";
 import ig37 from "@/assets/wiskow-ig37.jpg.asset.json";
 import ig38 from "@/assets/wiskow-ig38.jpg.asset.json";
 import ig39 from "@/assets/wiskow-ig39.jpg.asset.json";
-import ig40 from "@/assets/wiskow-ig40.jpg.asset.json";
+import ig40 from "@/assets/wiskow-ig40.jpg";
 import ig41 from "@/assets/wiskow-ig41.jpg.asset.json";
 
 export const IMG = {
@@ -43,7 +43,7 @@ export const IMG = {
   caneladaOff: ig02.url,
   caneladaOffAlt: ig10.url,
   caneladaOffCostas: ig11.url,
-  caneladaOffLook: ig30.url,
+  caneladaOffLook: ig30,
   croppedTomara: ig03.url,
   bodyCutout: ig05.url,
   bodyCutoutAlt: ig39.url,
@@ -61,12 +61,12 @@ export const IMG = {
   conjuntoOff: ig16.url,
   conjuntoOffAlt: ig20.url,
   vestidoCurto: ig19.url,
-  vestidoCurtoCostas: ig40.url,
+  vestidoCurtoCostas: ig40,
   amarracao: ig18.url,
   amarracaoCostas: ig25.url,
   vestidoLongo: ig32.url,
   vestidoLongoAlt: ig29.url,
-  conjuntoCutout: ig36.url,
+  conjuntoCutout: ig36,
   conjuntoCutoutAlt: ig28.url,
   calcaCouro: ig31.url,
   calcaCouroAlt: ig34.url,
@@ -74,7 +74,7 @@ export const IMG = {
   jeansBaggyAlt: ig38.url,
   blusaGrafite: ig22.url,
   neon: ig09.url,
-  neonAlt: ig33.url,
+  neonAlt: ig33,
 } as const;
 
 export const instagramFeed = [
