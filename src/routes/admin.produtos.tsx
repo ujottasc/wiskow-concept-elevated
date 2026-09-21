@@ -231,12 +231,12 @@ function ProdutosAdmin() {
                 onUploaded={rememberUploads}
                 onBusyChange={trackUpload}
                 value={editing.images}
-                onChange={images => setEditing({ ...editing, images })}
+                onChange={images => setEditing(current => current ? { ...current, images } : current)}
               />
 
               <ColorVariantsEditor
                 value={editing.variants ?? []}
-                onChange={variants => setEditing({ ...editing, variants })}
+                onChange={variants => setEditing(current => current ? { ...current, variants } : current)}
                 productId={editing.id}
                 onUploaded={rememberUploads}
                 onBusyChange={trackUpload}

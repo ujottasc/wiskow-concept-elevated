@@ -159,7 +159,7 @@ export function ImageUploader({
       <div
         onDragOver={e => { e.preventDefault(); setDrag(true); }}
         onDragLeave={() => setDrag(false)}
-        onDrop={e => { e.preventDefault(); setDrag(false); void handleFiles(e.dataTransfer.files); }}
+        onDrop={e => { e.preventDefault(); setDrag(false); if (!busy) void handleFiles(e.dataTransfer.files); }}
         onClick={() => { if (!busy) inputRef.current?.click(); }}
         role="button"
         tabIndex={0}
