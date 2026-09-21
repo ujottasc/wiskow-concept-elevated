@@ -35,6 +35,7 @@ function ProdutosAdmin() {
   const [catFilter, setCatFilter] = useState<string>("");
   const [editing, setEditing] = useState<Product | null>(null);
   const [saving, setSaving] = useState(false);
+  const [uploadCount, setUploadCount] = useState(0);
   const [initialMedia, setInitialMedia] = useState<string[]>([]);
   const [sessionUploads, setSessionUploads] = useState<string[]>([]);
 
@@ -61,8 +62,13 @@ function ProdutosAdmin() {
   };
 
   const rememberUploads = (urls: string[]) => setSessionUploads(current => [...new Set([...current, ...urls])]);
+  const trackUpload = (busy: boolean) => setUploadCount(count => Math.max(0, count + (busy ? 1 : -1)));
 
   const closeEditor = async () => {
+    if (uploadCount > 0) {
+      toast.error("Aguarde o envio das imagens terminar antes de fechar.");
+      return;
+    }
     if (editing && sessionUploads.length) await deleteProductMedia(sessionUploads, editing.id);
     setEditing(null);
     setInitialMedia([]);
@@ -71,6 +77,10 @@ function ProdutosAdmin() {
 
   const save = async () => {
     if (!editing) return;
+    if (uploadCount > 0) {
+      toast.error("Aguarde o envio das imagens terminar antes de salvar.");
+      return;
+    }
     if (!editing.name.trim()) return;
     const variants = (editing.variants ?? []).filter(v => v.name.trim());
     if ((editing.variants ?? []).length !== variants.length) {
@@ -219,6 +229,7 @@ function ProdutosAdmin() {
                 requirePublicUrl
                 allowExternalUrl={false}
                 onUploaded={rememberUploads}
+                onBusyChange={trackUpload}
                 value={editing.images}
                 onChange={images => setEditing({ ...editing, images })}
               />
@@ -228,6 +239,7 @@ function ProdutosAdmin() {
                 onChange={variants => setEditing({ ...editing, variants })}
                 productId={editing.id}
                 onUploaded={rememberUploads}
+                onBusyChange={trackUpload}
               />
 
               <Field label="Tamanhos disponíveis">
@@ -247,8 +259,8 @@ function ProdutosAdmin() {
               </div>
 
               <div className="flex flex-col sm:flex-row gap-2 pt-4 border-t border-border">
-                <button disabled={saving || !editing.name.trim()} onClick={() => void save()} className="flex-1 bg-foreground text-background py-3 text-xs uppercase tracking-[0.22em] disabled:opacity-50">
-                  {saving ? "Salvando…" : "Salvar"}
+                <button disabled={saving || uploadCount > 0 || !editing.name.trim()} onClick={() => void save()} className="flex-1 bg-foreground text-background py-3 text-xs uppercase tracking-[0.22em] disabled:opacity-50">
+                  {saving ? "Salvando…" : uploadCount > 0 ? "Enviando imagens…" : "Salvar"}
                 </button>
                 <button onClick={() => { void closeEditor(); }} className="px-6 py-3 text-xs uppercase tracking-[0.22em] border border-border">Cancelar</button>
               </div>

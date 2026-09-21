@@ -104,6 +104,7 @@ interface Props {
   requirePublicUrl?: boolean;
   allowExternalUrl?: boolean;
   onUploaded?: (urls: string[]) => void;
+  onBusyChange?: (busy: boolean) => void;
 }
 
 export function ImageUploader({
@@ -115,6 +116,7 @@ export function ImageUploader({
   requirePublicUrl = false,
   allowExternalUrl = true,
   onUploaded,
+  onBusyChange,
 }: Props) {
   const [busy, setBusy] = useState(false);
   const [drag, setDrag] = useState(false);
@@ -125,6 +127,7 @@ export function ImageUploader({
     const list = Array.from(files);
     if (!list.length) return;
     setBusy(true);
+    onBusyChange?.(true);
     const uploaded: string[] = [];
     try {
       for (const f of multiple ? list : list.slice(0, 1)) {
@@ -135,6 +138,7 @@ export function ImageUploader({
       toast.error("O envio foi interrompido. Verifique sua conexão e tente novamente.");
     } finally {
       setBusy(false);
+      onBusyChange?.(false);
     }
     if (!uploaded.length) return;
     const firstUploaded = uploaded[0];
@@ -142,7 +146,7 @@ export function ImageUploader({
     onUploaded?.(uploaded);
     onChange(multiple ? [...value, ...uploaded] : [firstUploaded]);
     toast.success(uploaded.length > 1 ? "Imagens enviadas." : "Imagem enviada.");
-  }, [folder, multiple, onChange, onUploaded, requirePublicUrl, value]);
+  }, [folder, multiple, onBusyChange, onChange, onUploaded, requirePublicUrl, value]);
 
   const remove = (url: string) => onChange(value.filter(v => v !== url));
 

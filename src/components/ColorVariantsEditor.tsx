@@ -10,12 +10,13 @@ interface Props {
   onChange: (v: ProductVariant[]) => void;
   productId: string;
   onUploaded?: (urls: string[]) => void;
+  onBusyChange?: (busy: boolean) => void;
 }
 
 const newId = () =>
   typeof crypto !== "undefined" && crypto.randomUUID ? crypto.randomUUID() : `v-${Date.now()}-${Math.random()}`;
 
-export function ColorVariantsEditor({ value, onChange, productId, onUploaded }: Props) {
+export function ColorVariantsEditor({ value, onChange, productId, onUploaded, onBusyChange }: Props) {
   const [open, setOpen] = useState<string | null>(value[0]?.id ?? null);
 
   const patch = (id: string, data: Partial<ProductVariant>) =>
@@ -138,6 +139,7 @@ export function ColorVariantsEditor({ value, onChange, productId, onUploaded }: 
                     requirePublicUrl
                     allowExternalUrl={false}
                     onUploaded={onUploaded}
+                    onBusyChange={onBusyChange}
                     value={imgs}
                     onChange={images =>
                       patch(v.id, {
