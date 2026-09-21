@@ -3,7 +3,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { Plus, Search, Pencil, Trash2 } from "lucide-react";
 import { PageHeader, AdminDrawer } from "@/components/AdminLayout";
-import { ImageUploader } from "@/components/ImageUploader";
+import { deleteProductMedia, ImageUploader, isPublicMediaUrl } from "@/components/ImageUploader";
 import { ColorVariantsEditor } from "@/components/ColorVariantsEditor";
 import { useStore, formatPrice } from "@/lib/store";
 import type { Product } from "@/lib/types";
@@ -35,16 +35,52 @@ function ProdutosAdmin() {
   const [catFilter, setCatFilter] = useState<string>("");
   const [editing, setEditing] = useState<Product | null>(null);
   const [saving, setSaving] = useState(false);
+  const [uploadCount, setUploadCount] = useState(0);
+  const [initialMedia, setInitialMedia] = useState<string[]>([]);
+  const [sessionUploads, setSessionUploads] = useState<string[]>([]);
 
   const filtered = products.filter(p =>
     (!catFilter || p.category === catFilter) &&
     (!query || p.name.toLowerCase().includes(query.toLowerCase()))
   );
 
-  const openNew = () => setEditing({ ...empty, category: categories[0]?.id ?? "" });
+  const mediaFromProduct = (product: Product) => [
+    ...product.images,
+    ...(product.variants ?? []).flatMap(variant => variant.images ?? []),
+  ];
+
+  const openNew = () => {
+    setInitialMedia([]);
+    setSessionUploads([]);
+    setEditing({ ...empty, id: crypto.randomUUID(), category: categories[0]?.id ?? "" });
+  };
+
+  const openEdit = (product: Product) => {
+    setInitialMedia(mediaFromProduct(product));
+    setSessionUploads([]);
+    setEditing(product);
+  };
+
+  const rememberUploads = (urls: string[]) => setSessionUploads(current => [...new Set([...current, ...urls])]);
+  const trackUpload = (busy: boolean) => setUploadCount(count => Math.max(0, count + (busy ? 1 : -1)));
+
+  const closeEditor = async () => {
+    if (uploadCount > 0) {
+      toast.error("Aguarde o envio das imagens terminar antes de fechar.");
+      return;
+    }
+    if (editing && sessionUploads.length) await deleteProductMedia(sessionUploads, editing.id);
+    setEditing(null);
+    setInitialMedia([]);
+    setSessionUploads([]);
+  };
 
   const save = async () => {
     if (!editing) return;
+    if (uploadCount > 0) {
+      toast.error("Aguarde o envio das imagens terminar antes de salvar.");
+      return;
+    }
     if (!editing.name.trim()) return;
     const variants = (editing.variants ?? []).filter(v => v.name.trim());
     if ((editing.variants ?? []).length !== variants.length) {
@@ -56,13 +92,26 @@ function ProdutosAdmin() {
       toast.error("Há cores duplicadas neste produto.");
       return;
     }
-    setSaving(true);
     const payload = { ...editing, variants, colors: variants.length ? variants.map(v => v.name.trim()) : editing.colors };
+    const finalMedia = mediaFromProduct(payload);
+    const initialSet = new Set(initialMedia);
+    const invalidNewImage = finalMedia.find(url => !initialSet.has(url) && (url.includes("/__l5e/") || !isPublicMediaUrl(url)));
+    if (invalidNewImage) {
+      toast.error("Uma imagem nova não possui um endereço permanente. Remova-a e envie o arquivo novamente.");
+      return;
+    }
+    setSaving(true);
     const exists = products.find(p => p.id === editing.id);
-    if (exists) await updateProduct(payload);
-    else await addProduct(payload);
+    const saved = exists ? await updateProduct(payload) : await addProduct(payload);
     setSaving(false);
+    if (!saved) return;
+    const finalSet = new Set(finalMedia);
+    const removedExisting = initialMedia.filter(url => !finalSet.has(url));
+    const discardedUploads = sessionUploads.filter(url => !finalSet.has(url));
+    await deleteProductMedia([...removedExisting, ...discardedUploads], editing.id);
     setEditing(null);
+    setInitialMedia([]);
+    setSessionUploads([]);
   };
 
   return (
@@ -113,7 +162,7 @@ function ProdutosAdmin() {
                 <td className="p-3 text-right">{formatPrice(p.price)}</td>
                 <td className="p-3">
                   <div className="flex justify-end gap-2">
-                    <button onClick={() => setEditing(p)} aria-label="Editar" className="p-2 hover:bg-secondary"><Pencil className="h-3.5 w-3.5" /></button>
+                    <button onClick={() => openEdit(p)} aria-label="Editar" className="p-2 hover:bg-secondary"><Pencil className="h-3.5 w-3.5" /></button>
                     <button onClick={() => { if (confirm(`Remover ${p.name}?`)) void removeProduct(p.id); }} aria-label="Remover" className="p-2 hover:bg-secondary"><Trash2 className="h-3.5 w-3.5" /></button>
                   </div>
                 </td>
@@ -140,7 +189,7 @@ function ProdutosAdmin() {
               </div>
             </div>
             <div className="mt-3 flex gap-2">
-              <button onClick={() => setEditing(p)} className="flex-1 border border-border min-h-11 text-[10px] uppercase tracking-[0.22em] inline-flex items-center justify-center gap-2"><Pencil className="h-4 w-4" /> Editar</button>
+              <button onClick={() => openEdit(p)} className="flex-1 border border-border min-h-11 text-[10px] uppercase tracking-[0.22em] inline-flex items-center justify-center gap-2"><Pencil className="h-4 w-4" /> Editar</button>
               <button onClick={() => { if (confirm(`Remover ${p.name}?`)) void removeProduct(p.id); }} aria-label="Remover" className="border border-border w-11 min-h-11 flex items-center justify-center"><Trash2 className="h-4 w-4" /></button>
             </div>
           </div>
@@ -149,7 +198,7 @@ function ProdutosAdmin() {
       </div>
 
       {editing && (
-        <AdminDrawer title={`${products.find(p => p.id === editing.id) ? "Editar" : "Novo"} produto`} onClose={() => setEditing(null)}>
+        <AdminDrawer title={`${products.find(p => p.id === editing.id) ? "Editar" : "Novo"} produto`} onClose={() => { void closeEditor(); }}>
 
               <Field label="Nome"><input value={editing.name} onChange={e => setEditing({ ...editing, name: e.target.value })} className="input" /></Field>
               <Field label="Status">
@@ -176,14 +225,21 @@ function ProdutosAdmin() {
               <ImageUploader
                 label="Imagens gerais (usadas quando não há cor selecionada)"
                 multiple
-                folder="produtos"
+                folder={`produtos/${editing.id}/geral`}
+                requirePublicUrl
+                allowExternalUrl={false}
+                onUploaded={rememberUploads}
+                onBusyChange={trackUpload}
                 value={editing.images}
-                onChange={images => setEditing({ ...editing, images })}
+                onChange={images => setEditing(current => current ? { ...current, images } : current)}
               />
 
               <ColorVariantsEditor
                 value={editing.variants ?? []}
-                onChange={variants => setEditing({ ...editing, variants })}
+                onChange={variants => setEditing(current => current ? { ...current, variants } : current)}
+                productId={editing.id}
+                onUploaded={rememberUploads}
+                onBusyChange={trackUpload}
               />
 
               <Field label="Tamanhos disponíveis">
@@ -203,10 +259,10 @@ function ProdutosAdmin() {
               </div>
 
               <div className="flex flex-col sm:flex-row gap-2 pt-4 border-t border-border">
-                <button disabled={saving || !editing.name.trim()} onClick={() => void save()} className="flex-1 bg-foreground text-background py-3 text-xs uppercase tracking-[0.22em] disabled:opacity-50">
-                  {saving ? "Salvando…" : "Salvar"}
+                <button disabled={saving || uploadCount > 0 || !editing.name.trim()} onClick={() => void save()} className="flex-1 bg-foreground text-background py-3 text-xs uppercase tracking-[0.22em] disabled:opacity-50">
+                  {saving ? "Salvando…" : uploadCount > 0 ? "Enviando imagens…" : "Salvar"}
                 </button>
-                <button onClick={() => setEditing(null)} className="px-6 py-3 text-xs uppercase tracking-[0.22em] border border-border">Cancelar</button>
+                <button onClick={() => { void closeEditor(); }} className="px-6 py-3 text-xs uppercase tracking-[0.22em] border border-border">Cancelar</button>
               </div>
         </AdminDrawer>
       )}
