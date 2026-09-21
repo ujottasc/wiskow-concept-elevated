@@ -26,7 +26,45 @@ const MIME_BY_EXTENSION: Record<string, string> = {
 };
 const FILE_ACCEPT = ACCEPTED_EXTENSIONS.map(extension => `.${extension}`).join(",");
 
-async function uploadFile(file: File, folder: string): Promise<string | null> {
+const MEDIA_BUCKET = "media";
+const PUBLIC_PATH_MARKER = `/storage/v1/object/public/${MEDIA_BUCKET}/`;
+
+function mediaPublicUrl(path: string): string {
+  return supabase.storage.from(MEDIA_BUCKET).getPublicUrl(path).data.publicUrl;
+}
+
+export function isPublicMediaUrl(url: string): boolean {
+  try {
+    const expected = new URL(mediaPublicUrl("url-check"));
+    const candidate = new URL(url);
+    return candidate.origin === expected.origin && candidate.pathname.startsWith(PUBLIC_PATH_MARKER);
+  } catch {
+    return false;
+  }
+}
+
+function productMediaPath(url: string, productId: string): string | null {
+  if (!isPublicMediaUrl(url)) return null;
+  try {
+    const path = decodeURIComponent(new URL(url).pathname.split(PUBLIC_PATH_MARKER)[1] ?? "");
+    return path.startsWith(`produtos/${productId}/`) ? path : null;
+  } catch {
+    return null;
+  }
+}
+
+export async function deleteProductMedia(urls: string[], productId: string): Promise<boolean> {
+  const paths = [...new Set(urls.map(url => productMediaPath(url, productId)).filter((path): path is string => Boolean(path)))];
+  if (!paths.length) return true;
+  const { error } = await supabase.storage.from(MEDIA_BUCKET).remove(paths);
+  if (error) {
+    toast.error("A imagem foi desvinculada, mas não foi possível remover o arquivo do armazenamento.");
+    return false;
+  }
+  return true;
+}
+
+async function uploadFile(file: File, folder: string, requirePublicUrl: boolean): Promise<string | null> {
   const extension = (file.name.split(".").pop() || "").toLowerCase();
   const hasAcceptedExtension = ACCEPTED_EXTENSIONS.some(accepted => accepted === extension);
   const hasAcceptedMime = ACCEPTED_MIME_TYPES.has(file.type.toLowerCase());
@@ -39,16 +77,22 @@ async function uploadFile(file: File, folder: string): Promise<string | null> {
     return null;
   }
   const path = `${folder}/${crypto.randomUUID()}.${extension}`;
-  const { error } = await supabase.storage.from("media").upload(path, file, {
+  const { error } = await supabase.storage.from(MEDIA_BUCKET).upload(path, file, {
     cacheControl: "31536000",
     contentType: file.type || MIME_BY_EXTENSION[extension],
     upsert: false,
   });
   if (error) {
-    toast.error(error.message);
+    toast.error(`Não foi possível enviar ${file.name}. Tente novamente.`);
     return null;
   }
-  return `/api/public/media/${path}`;
+  const publicUrl = mediaPublicUrl(path);
+  if (requirePublicUrl && (!isPublicMediaUrl(publicUrl) || publicUrl.includes("/__l5e/"))) {
+    await supabase.storage.from(MEDIA_BUCKET).remove([path]);
+    toast.error("O endereço permanente da imagem não pôde ser criado. Tente novamente.");
+    return null;
+  }
+  return requirePublicUrl ? publicUrl : `/api/public/media/${path}`;
 }
 
 interface Props {
@@ -57,9 +101,21 @@ interface Props {
   folder?: string;
   multiple?: boolean;
   label?: string;
+  requirePublicUrl?: boolean;
+  allowExternalUrl?: boolean;
+  onUploaded?: (urls: string[]) => void;
 }
 
-export function ImageUploader({ value, onChange, folder = "uploads", multiple = false, label }: Props) {
+export function ImageUploader({
+  value,
+  onChange,
+  folder = "uploads",
+  multiple = false,
+  label,
+  requirePublicUrl = false,
+  allowExternalUrl = true,
+  onUploaded,
+}: Props) {
   const [busy, setBusy] = useState(false);
   const [drag, setDrag] = useState(false);
   const [urlInput, setUrlInput] = useState("");
@@ -70,17 +126,23 @@ export function ImageUploader({ value, onChange, folder = "uploads", multiple = 
     if (!list.length) return;
     setBusy(true);
     const uploaded: string[] = [];
-    for (const f of multiple ? list : list.slice(0, 1)) {
-      const url = await uploadFile(f, folder);
-      if (url) uploaded.push(url);
+    try {
+      for (const f of multiple ? list : list.slice(0, 1)) {
+        const url = await uploadFile(f, folder, requirePublicUrl);
+        if (url) uploaded.push(url);
+      }
+    } catch {
+      toast.error("O envio foi interrompido. Verifique sua conexão e tente novamente.");
+    } finally {
+      setBusy(false);
     }
-    setBusy(false);
     if (!uploaded.length) return;
     const firstUploaded = uploaded[0];
     if (!firstUploaded) return;
+    onUploaded?.(uploaded);
     onChange(multiple ? [...value, ...uploaded] : [firstUploaded]);
     toast.success(uploaded.length > 1 ? "Imagens enviadas." : "Imagem enviada.");
-  }, [folder, multiple, onChange, value]);
+  }, [folder, multiple, onChange, onUploaded, requirePublicUrl, value]);
 
   const remove = (url: string) => onChange(value.filter(v => v !== url));
 
@@ -94,11 +156,12 @@ export function ImageUploader({ value, onChange, folder = "uploads", multiple = 
         onDragOver={e => { e.preventDefault(); setDrag(true); }}
         onDragLeave={() => setDrag(false)}
         onDrop={e => { e.preventDefault(); setDrag(false); void handleFiles(e.dataTransfer.files); }}
-        onClick={() => inputRef.current?.click()}
+        onClick={() => { if (!busy) inputRef.current?.click(); }}
         role="button"
         tabIndex={0}
-        onKeyDown={e => { if (e.key === "Enter" || e.key === " ") inputRef.current?.click(); }}
-        className={`cursor-pointer border border-dashed px-6 py-8 text-center transition-colors ${drag ? "border-foreground bg-secondary/60" : "border-border hover:border-foreground"}`}
+        onKeyDown={e => { if (!busy && (e.key === "Enter" || e.key === " ")) inputRef.current?.click(); }}
+        aria-disabled={busy}
+        className={`border border-dashed px-6 py-8 text-center transition-colors ${busy ? "cursor-wait opacity-70" : "cursor-pointer"} ${drag ? "border-foreground bg-secondary/60" : "border-border hover:border-foreground"}`}
       >
         {busy ? (
           <Loader2 className="h-5 w-5 mx-auto animate-spin" />
@@ -137,7 +200,7 @@ export function ImageUploader({ value, onChange, folder = "uploads", multiple = 
         </div>
       )}
 
-      <div className="mt-3 flex gap-2">
+      {allowExternalUrl && <div className="mt-3 flex gap-2">
         <input
           value={urlInput}
           onChange={e => setUrlInput(e.target.value)}
@@ -156,7 +219,7 @@ export function ImageUploader({ value, onChange, folder = "uploads", multiple = 
         >
           <LinkIcon className="h-3 w-3" /> Usar
         </button>
-      </div>
+      </div>}
     </div>
   );
 }

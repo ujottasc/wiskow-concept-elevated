@@ -8,12 +8,14 @@ import type { ProductVariant } from "@/lib/types";
 interface Props {
   value: ProductVariant[];
   onChange: (v: ProductVariant[]) => void;
+  productId: string;
+  onUploaded?: (urls: string[]) => void;
 }
 
 const newId = () =>
   typeof crypto !== "undefined" && crypto.randomUUID ? crypto.randomUUID() : `v-${Date.now()}-${Math.random()}`;
 
-export function ColorVariantsEditor({ value, onChange }: Props) {
+export function ColorVariantsEditor({ value, onChange, productId, onUploaded }: Props) {
   const [open, setOpen] = useState<string | null>(value[0]?.id ?? null);
 
   const patch = (id: string, data: Partial<ProductVariant>) =>
@@ -132,7 +134,10 @@ export function ColorVariantsEditor({ value, onChange }: Props) {
                   <ImageUploader
                     label={`Imagens da cor ${v.name || "(sem nome)"}`}
                     multiple
-                    folder="produtos"
+                    folder={`produtos/${productId}/variantes/${v.id}`}
+                    requirePublicUrl
+                    allowExternalUrl={false}
+                    onUploaded={onUploaded}
                     value={imgs}
                     onChange={images =>
                       patch(v.id, {
