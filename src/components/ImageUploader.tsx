@@ -4,21 +4,44 @@ import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 
 const MAX_MB = 8;
+const ACCEPTED_EXTENSIONS = ["jpg", "jpeg", "jfif", "png", "webp", "avif", "gif", "bmp"] as const;
+const ACCEPTED_MIME_TYPES = new Set([
+  "image/jpeg",
+  "image/png",
+  "image/webp",
+  "image/avif",
+  "image/gif",
+  "image/bmp",
+  "image/x-ms-bmp",
+]);
+const MIME_BY_EXTENSION: Record<string, string> = {
+  jpg: "image/jpeg",
+  jpeg: "image/jpeg",
+  jfif: "image/jpeg",
+  png: "image/png",
+  webp: "image/webp",
+  avif: "image/avif",
+  gif: "image/gif",
+  bmp: "image/bmp",
+};
+const FILE_ACCEPT = ACCEPTED_EXTENSIONS.map(extension => `.${extension}`).join(",");
 
 async function uploadFile(file: File, folder: string): Promise<string | null> {
-  if (!file.type.startsWith("image/")) {
-    toast.error("Envie apenas arquivos de imagem.");
+  const extension = (file.name.split(".").pop() || "").toLowerCase();
+  const hasAcceptedExtension = ACCEPTED_EXTENSIONS.some(accepted => accepted === extension);
+  const hasAcceptedMime = ACCEPTED_MIME_TYPES.has(file.type.toLowerCase());
+  if (!hasAcceptedExtension || (file.type && !hasAcceptedMime)) {
+    toast.error("Formato não aceito. Use JPEG, JPG, JFIF, PNG, WEBP, AVIF, GIF ou BMP.");
     return null;
   }
   if (file.size > MAX_MB * 1024 * 1024) {
     toast.error(`Imagem muito grande (máx. ${MAX_MB}MB).`);
     return null;
   }
-  const ext = (file.name.split(".").pop() || "jpg").toLowerCase();
-  const path = `${folder}/${crypto.randomUUID()}.${ext}`;
+  const path = `${folder}/${crypto.randomUUID()}.${extension}`;
   const { error } = await supabase.storage.from("media").upload(path, file, {
     cacheControl: "31536000",
-    contentType: file.type,
+    contentType: file.type || MIME_BY_EXTENSION[extension],
     upsert: false,
   });
   if (error) {
@@ -53,7 +76,9 @@ export function ImageUploader({ value, onChange, folder = "uploads", multiple = 
     }
     setBusy(false);
     if (!uploaded.length) return;
-    onChange(multiple ? [...value, ...uploaded] : [uploaded[0]!]);
+    const firstUploaded = uploaded[0];
+    if (!firstUploaded) return;
+    onChange(multiple ? [...value, ...uploaded] : [firstUploaded]);
     toast.success(uploaded.length > 1 ? "Imagens enviadas." : "Imagem enviada.");
   }, [folder, multiple, onChange, value]);
 
@@ -83,11 +108,11 @@ export function ImageUploader({ value, onChange, folder = "uploads", multiple = 
         <p className="mt-3 text-xs uppercase tracking-[0.22em] text-muted-foreground">
           {busy ? "Enviando…" : "Arraste a imagem ou clique para escolher"}
         </p>
-        <p className="mt-1 text-[10px] text-muted-foreground">JPG, PNG ou WEBP · até {MAX_MB}MB</p>
+        <p className="mt-1 text-[10px] text-muted-foreground">JPEG, PNG, WEBP, AVIF, GIF, BMP ou JFIF · até {MAX_MB}MB</p>
         <input
           ref={inputRef}
           type="file"
-          accept="image/*"
+          accept={FILE_ACCEPT}
           multiple={multiple}
           className="hidden"
           onChange={e => { if (e.target.files) void handleFiles(e.target.files); e.target.value = ""; }}
