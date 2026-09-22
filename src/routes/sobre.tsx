@@ -25,11 +25,10 @@ function Sobre() {
   return (
     <SiteLayout>
       <section className="container-x pt-20 pb-16 text-center max-w-4xl mx-auto">
-        <p className="eyebrow text-muted-foreground">Manifesto</p>
+        <p className="eyebrow text-muted-foreground">A marca</p>
 
         <h1 className="font-serif text-5xl md:text-7xl mt-4 leading-tight">
-          Roupa não é tendência.
-          <br />É linguagem.
+          Nasceu de um sonho.
         </h1>
       </section>
 
@@ -47,20 +46,30 @@ function Sobre() {
 
       <section className="container-x pb-24 grid gap-16 md:grid-cols-2 max-w-5xl mx-auto">
         <div>
-          <p className="eyebrow text-muted-foreground">A marca</p>
+          <p className="eyebrow text-muted-foreground">Wiskow Concept</p>
 
-          <h2 className="font-serif text-3xl md:text-4xl mt-4">Nasceu do gesto.</h2>
+          <h2 className="font-serif text-3xl md:text-4xl mt-4">Uma ideia transformada em algo real.</h2>
         </div>
 
         <div className="text-muted-foreground leading-relaxed space-y-4">
           <p>
-            A Wiskow Concept começou como um caderno de recortes. Silhuetas anotadas, tecidos tocados de leve, cores
-            absorvidas nas viagens. Uma marca que fala baixo, mas fica.
+            A Wiskow Concept nasceu da vontade de transformar uma ideia em algo real. Um sonho construído com coragem
+            para começar, dedicação em cada detalhe e o desejo de criar uma marca que tivesse personalidade.
           </p>
 
           <p>
-            Trabalhamos com pequenas produções, matérias-primas naturais e uma obsessão discreta pelo caimento. Cada
-            peça é pensada para envelhecer com a mulher que a veste.
+            Mais do que roupas, a Wiskow Concept representa uma forma de se expressar. Peças escolhidas para acompanhar
+            diferentes momentos, do cotidiano às ocasiões especiais, sempre com um olhar atento às tendências e àquilo
+            que faz cada mulher se sentir confiante.
+          </p>
+
+          <p>
+            Acreditamos na moda como extensão da personalidade, na autoestima que nasce quando você se sente bem com o
+            que veste e nos detalhes que tornam cada escolha única.
+          </p>
+
+          <p>
+            A Wiskow Concept é só o começo de uma história que queremos construir junto com vocês.
           </p>
         </div>
       </section>
@@ -94,32 +103,6 @@ function Sobre() {
         </div>
       </section>
 
-      <section className="container-x pb-24 max-w-3xl mx-auto text-center">
-        <p className="eyebrow text-muted-foreground">Nossos valores</p>
-
-        <div className="mt-10 grid gap-10 md:grid-cols-3 text-left">
-          {[
-            {
-              t: "Feito com tempo",
-              d: "Sem pressa industrial. Peças pequenas, feitas com atenção.",
-            },
-            {
-              t: "Materiais naturais",
-              d: "Linho, seda, cashmere, algodão egípcio. Fibras que respiram.",
-            },
-            {
-              t: "Silhueta que fica",
-              d: "Design que não persegue estações. Roupa para o guarda-roupa.",
-            },
-          ].map((v) => (
-            <div key={v.t}>
-              <h3 className="font-serif text-2xl">{v.t}</h3>
-
-              <p className="text-sm text-muted-foreground mt-3 leading-relaxed">{v.d}</p>
-            </div>
-          ))}
-        </div>
-      </section>
     </SiteLayout>
   );
 }
