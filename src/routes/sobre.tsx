@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { SiteLayout } from "@/components/SiteLayout";
 import { IMG } from "@/lib/brand-images";
+import sobreImage from "@/assets/sobre-wiskow-concept.jpeg.asset.json";
 
 export const Route = createFileRoute("/sobre")({
   head: () => ({
@@ -40,7 +41,7 @@ function Sobre() {
           transition={{ duration: 1 }}
           className="aspect-[16/9] md:aspect-[21/9] overflow-hidden"
         >
-          <img src={IMG.neonAlt} alt="Editorial Wiskow Concept em luz neon" className="h-full w-full object-cover" />
+          <img src={sobreImage.url} alt="Editorial Wiskow Concept" className="h-full w-full object-cover" />
         </motion.div>
       </section>
 
